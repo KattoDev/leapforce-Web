@@ -10,4 +10,6 @@ USERS_ROUTING.post("/", routerFunctions.add);
 
 USERS_ROUTING.delete("/", routerFunctions.remove);
 
+USERS_ROUTING.patch("/", routerFunctions.update);
+
 export default USERS_ROUTING;

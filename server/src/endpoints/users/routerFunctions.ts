@@ -1,19 +1,23 @@
 import queries from "./queries";
 import responses from "../../web/responses";
 
-// ! --------------------------------------------------------------------------
-// ! --------------------------------------------------------------------------
-// ! --------------------------------------------------------------------------
-// ! --------------------------------------------------------------------------
-
-// TODO FIX THIS
-// ? if the body has a JSON routes to getUniqueViaLogin otherwise getAllEntries
-
+/**
+ * if the request body is empty:
+ *
+ * - Get all the entries of the users table
+ *
+ * if the request body contains `email and password`:
+ *
+ * - Get the specific entry
+ *
+ *
+ * @param req the request
+ * @param res the response
+ */
 async function getAll(req: any, res: any) {
-  return responses.error(req, res, "FIX THIS @ routerFunctions.ts", 500);
   try {
-    console.log("ALERT: " + req.body);
-    if (req.body != "") {
+    // if the request body is not empty query via login
+    if (req.body.email && req.body.password) {
       await queries
         .getUniqueViaLogin(req.body.email, req.body.password)
         .then((items) => {
@@ -28,10 +32,6 @@ async function getAll(req: any, res: any) {
     responses.error(req, res, error, 500);
   }
 }
-// ! --------------------------------------------------------------------------
-// ! --------------------------------------------------------------------------
-// ! --------------------------------------------------------------------------
-// ! --------------------------------------------------------------------------
 
 /**
  * Gets a unique entry of a user with a specific ID.
@@ -57,8 +57,9 @@ async function getUniqueViaID(req: any, res: any) {
  */
 async function remove(req: any, res: any) {
   try {
-    await queries.remove(req.body.uid);
-    responses.success(req, res, "Item eliminado", 200);
+    await queries.remove(req.body.UID).then(() => {
+      responses.success(req, res, `USER WITH UID ${req.body.UID} REMOVED`, 200);
+    });
   } catch (error) {
     responses.error(req, res, error, 500);
   }
@@ -71,11 +72,42 @@ async function remove(req: any, res: any) {
  */
 async function add(req: any, res: any) {
   try {
-    queries.add(req.body);
-    responses.success(req, res, req.body, 200);
+    queries.add(req.body).then(() => {
+      responses.success(req, res, `USER ADDED`, 200);
+    });
   } catch (error) {
     responses.error(req, res, error, 500);
   }
 }
 
-export default { add, remove, getUniqueViaID, getAll };
+async function update(req: any, res: any) {
+  try {
+    const REQ_BODY: any = req.body;
+    if (
+      REQ_BODY.UID &&
+      REQ_BODY.name &&
+      REQ_BODY.address &&
+      REQ_BODY.birthDay &&
+      REQ_BODY.phone &&
+      REQ_BODY.email &&
+      REQ_BODY.department &&
+      REQ_BODY.position &&
+      REQ_BODY.salary &&
+      REQ_BODY.password &&
+      REQ_BODY.isAdmin
+    ) {
+      queries.update(REQ_BODY).then(() => {
+        responses.success(
+          req,
+          res,
+          `UPDATED USER WITH UID ${REQ_BODY.id}`,
+          200
+        );
+      });
+    } else throw new Error("UPDATE REQUEST BODY IS INCOMPLETE");
+  } catch (error) {
+    responses.error(req, res, error, 500);
+  }
+}
+
+export default { add, remove, getUniqueViaID, getAll, update };

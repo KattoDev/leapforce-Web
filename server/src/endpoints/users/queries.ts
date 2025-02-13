@@ -74,7 +74,7 @@ function add(data: any) {
       "${data.position}",
       "${data.salary}",
       "${data.password}",
-      "${data.isAdmin}")`,
+      ${data.isAdmin})`,
       (err, res) => {
         return err ? reject(err) : resolve(res);
       }
@@ -89,11 +89,42 @@ function add(data: any) {
  *
  * @returns the entries if the query is successfull otherwise returns a error
  */
-function remove(id: number) {
+function remove(UID: number) {
   return new Promise((resolve, reject) => {
-    connection.query(`DELETE FROM ${TABLE} WHERE UID = ${id}`, (err, res) => {
+    connection.query(`DELETE FROM ${TABLE} WHERE UID = ${UID}`, (err, res) => {
       return err ? reject(err) : resolve(res);
     });
+  });
+}
+
+/**
+ * **Patch** the information of a user
+ *
+ * @todo update the function to work only with necesary data
+ * @param data the data with the patch info
+ * @returns the entries if the query is successfull otherwise returns a error
+ */
+function update(data: any) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `
+      UPDATE ${TABLE} SET
+      name = "${data.name}",
+      address = "${data.address}",
+      birthDay = "${data.birthDay}",
+      phone = "${data.phone}",
+      email = "${data.email}",
+      department = "${data.department}",
+      position = "${data.position}",
+      salary = "${data.salary}",
+      password = "${data.password}",
+      isAdmin = ${data.isAdmin}
+      
+      WHERE UID = ${data.UID}; `,
+      (err, res) => {
+        return err ? reject(err) : resolve(res);
+      }
+    );
   });
 }
 
@@ -103,4 +134,5 @@ export default {
   getUniqueViaLogin,
   add,
   remove,
+  update,
 };
