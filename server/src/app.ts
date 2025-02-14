@@ -4,6 +4,7 @@ import morgan from "morgan";
 
 import appConfig from "./appConfig";
 import USERS_ROUTING from "./endpoints/users/router";
+import DEPARTMENTS_ROUTING from "./endpoints/departments/router";
 
 require("dotenv").config();
 
@@ -28,5 +29,6 @@ app.set("port", appConfig.app.port);
 
 // ROUTING
 app.use("/users", USERS_ROUTING);
+app.use("/departments", DEPARTMENTS_ROUTING);
 
 export default app;
