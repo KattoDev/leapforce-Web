@@ -1,4 +1,3 @@
-import { rejects } from "assert";
 import { connection } from "../../database/mysql";
 
 const TABLE = "departments";
@@ -37,10 +36,9 @@ function getUniqueViaID(DID: number) {
 /**
  * Adds to **departments table** the data with the standard information.
  *
- * such as `name, address, birthDay, phone, email, department, position, salary, password, isAdmin`
- * @param data data with the standard information
+ * **MUST CONTAIN: [name]**
  *
- * **MUST CONTAIN: [name, address, birthDay, phone, email, department, position, salary, password, isAdmin]**
+ * @param data data with the standard information
  *
  * @returns the entries if the query is successfull otherwise returns a error
  */
