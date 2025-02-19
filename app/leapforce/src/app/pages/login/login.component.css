@@ -1,0 +1,39 @@
+#container {
+  width: 100dvw;
+  height: 100dvh;
+  background-color: aqua;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  #login-box {
+    background-color: azure;
+    width: 966px;
+    height: 568px;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+
+    #gradient {
+      background: linear-gradient(90deg, #00c9ff 0%, #92fe9d 100%);
+      width: 400px;
+      height: inherit;
+      z-index: 1;
+    }
+
+    #login-title {
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    #login {
+      width: 566px;
+      background-color: blue;
+
+      div {
+        background-color: #fff;
+        text-align: center;
+      }
+    }
+  }
+}
