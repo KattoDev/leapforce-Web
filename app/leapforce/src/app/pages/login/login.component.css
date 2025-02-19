@@ -1,13 +1,13 @@
 #container {
   width: 100dvw;
   height: 100dvh;
-  background-color: aqua;
+  background-color: var(--default-background);
   display: flex;
   align-items: center;
   justify-content: center;
 
   #login-box {
-    background-color: azure;
+    background-color: var(--login-box);
     width: 966px;
     height: 568px;
     border-radius: 20px;
@@ -19,20 +19,50 @@
       width: 400px;
       height: inherit;
       z-index: 1;
+      position: relative;
+
+      #app-title {
+        font-size: 24px;
+        margin: 20px 20px 0;
+
+        .megrim {
+          font-size: 48px;
+          font-weight: bold;
+        }
+      }
+
+      #greeting {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        font-size: 18px;
+        font-weight: bold;
+      }
     }
 
     #login-title {
       font-size: 36px;
       font-weight: bold;
+      margin: 40px 0 0 60px;
     }
 
     #login {
       width: 566px;
-      background-color: blue;
+      position: relative;
 
       div {
-        background-color: #fff;
+        position: absolute;
+        left: 50%;
+        bottom: 10px;
+        transform: translate(-50%);
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        #support {
+          width: 400px;
+        }
       }
     }
   }
