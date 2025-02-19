@@ -1,0 +1,28 @@
+div {
+  background-color: aquamarine;
+  height: 100dvh;
+  border-radius: 10px;
+  width: 450px;
+  overflow: hidden;
+
+  #app-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    font-size: 48px;
+    height: 100px;
+  }
+
+  #app-title,
+  #management,
+  #general {
+    border-bottom: 1px solid red;
+  }
+
+  #management,
+  #general {
+    border-radius: 0;
+    height: max-content;
+  }
+}
