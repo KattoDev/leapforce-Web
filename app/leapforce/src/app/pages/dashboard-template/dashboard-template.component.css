@@ -1,0 +1,14 @@
+#container {
+  width: 100dvw;
+  height: 100dvh;
+  display: flex;
+  gap: 10px;
+  background-color: var(--default-background);
+
+  #content {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
