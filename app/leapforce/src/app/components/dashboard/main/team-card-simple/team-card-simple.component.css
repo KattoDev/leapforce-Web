@@ -1,0 +1,17 @@
+div {
+  width: 15dvw;
+  height: 30dvh;
+  background-color: blue;
+  border-radius: 10px;
+
+  p {
+    padding: 20px 0 0 20px;
+    /* font-size: 20px; */
+    font-weight: bold;
+  }
+
+  #user-team {
+    padding: 0 0 0 20px;
+    font-weight: normal;
+  }
+}
