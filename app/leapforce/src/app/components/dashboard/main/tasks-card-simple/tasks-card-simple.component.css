@@ -1,0 +1,12 @@
+div {
+  width: 49dvw;
+  height: 73dvh;
+  background-color: #fff;
+  border-radius: 10px;
+
+  table,
+  tr {
+    height: 40px;
+    border: 1px solid black;
+  }
+}
