@@ -2,11 +2,12 @@ div {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #fff;
+  background-color: red;
   border-radius: 10px;
-  height: 150px;
-  width: 78dvw;
-  font-size: 36px;
+  height: 80px;
+  width: 65dvw;
+  /* font-size: 18px; */
+
   p {
     padding-left: 50px;
   }
