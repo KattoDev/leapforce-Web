@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
-import { GeneralModuleComponent } from './general-module/general-module.component';
-import { ManagementModuleComponent } from './management-module/management-module.component';
 import { MatDivider } from '@angular/material/divider';
+import { SidebarModuleComponent } from './sidebar-module/sidebar-module.component';
+import moduleNode from './module.interface';
+import { managementTree, generalTree } from './sidebar-module/treesModules';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [ManagementModuleComponent, GeneralModuleComponent, MatDivider],
+  imports: [MatDivider, SidebarModuleComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+  managementModule: string = 'gestión de equipos';
+  generalModule: string = 'general';
+
+  managementTree: moduleNode[] = managementTree;
+  generalTree: moduleNode[] = generalTree;
+}

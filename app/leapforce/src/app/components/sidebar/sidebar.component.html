@@ -4,10 +4,13 @@
   </div>
   <mat-divider />
   <div id="management">
-    <app-management-module />
+    <app-sidebar-module
+      [TREE_DATA]="managementTree"
+      [moduleTitle]="'GESTION DE EQUIPOS'"
+    />
   </div>
   <mat-divider />
   <div id="general">
-    <app-general-module />
+    <app-sidebar-module [TREE_DATA]="generalTree" [moduleTitle]="'GENERAL'" />
   </div>
 </div>
