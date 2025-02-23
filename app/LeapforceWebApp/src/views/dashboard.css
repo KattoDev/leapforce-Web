@@ -1,0 +1,13 @@
+.dashboard-container {
+  display: flex;
+
+  .sidebar {
+    width: 25dvw;
+    height: 100dvh;
+  }
+
+  .content {
+    height: 100dvh;
+    width: 75dvw;
+  }
+}

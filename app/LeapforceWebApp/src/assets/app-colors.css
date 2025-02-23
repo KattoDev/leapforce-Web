@@ -1,0 +1,9 @@
+:root {
+  --default-background: #e5e4e2;
+  --login-box: #e8eef2;
+  --shadow: #b9aeae;
+  --app-color-3: #c7d3dd;
+  --app-color-4: #77b6ea;
+  --app-color-5: #37393a;
+  --login-gradient: linear-gradient(90deg, #00c9ff 0%, #92fe9d 100%);
+}
