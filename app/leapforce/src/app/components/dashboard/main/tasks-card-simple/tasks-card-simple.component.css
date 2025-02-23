@@ -1,12 +1,36 @@
-div {
-  width: 49dvw;
-  height: 73dvh;
+#container {
+  padding: 20px;
+  width: 30dvw;
+  height: calc(100dvh - 60px);
   background-color: #fff;
   border-radius: 10px;
+  overflow: hidden;
 
-  table,
-  tr {
-    height: 40px;
-    border: 1px solid black;
+  #header {
+    display: flex;
+    align-items: center;
+
+    div {
+      border: 1px solid black;
+    }
+
+    #title {
+      font-weight: bold;
+      font-size: 2em;
+    }
+    #pending-tasks {
+      font-size: 1em;
+    }
+
+    button {
+      background-color: red;
+      border-radius: 10px;
+      border: none;
+      width: 150%;
+    }
+  }
+
+  mat-divider {
+    margin: 10px 0 10px 0;
   }
 }
