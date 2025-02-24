@@ -22,11 +22,14 @@ function getAllEntries() {
  *
  * @returns the entries if the query is successfull otherwise returns a error
  */
-function getUniqueViaID(id: number) {
+function getUniqueViaID(UID: number) {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${TABLE} WHERE UID = ${id}`, (err, res) => {
-      return err ? reject(err) : resolve(res);
-    });
+    connection.query(
+      `SELECT * FROM ${TABLE} WHERE UID = ${UID}`,
+      (err, res) => {
+        return err ? reject(err) : resolve(res);
+      }
+    );
   });
 }
 
@@ -63,7 +66,7 @@ function add(data: any) {
   return new Promise((resolve, reject) => {
     connection.query(
       `INSERT INTO ${TABLE}
-      (name, address, birthDay, phone, email, department, position, salary, password, isAdmin)
+      (name, address, birthDay, phone, email, department, position, password, isAdmin)
       VALUES
       ("${data.name}",
       ${data.address},
@@ -72,7 +75,6 @@ function add(data: any) {
       "${data.email}",
       "${data.department}",
       "${data.position}",
-      "${data.salary}",
       "${data.password}",
       ${data.isAdmin})`,
       (err, res) => {
@@ -116,7 +118,6 @@ function update(data: any) {
       email = "${data.email}",
       department = "${data.department}",
       position = "${data.position}",
-      salary = "${data.salary}",
       password = "${data.password}",
       isAdmin = ${data.isAdmin}
       

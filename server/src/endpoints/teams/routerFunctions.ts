@@ -45,7 +45,7 @@ async function remove(req: any, res: any) {
       responses.success(
         req,
         res,
-        `DEPARTMENT WITH DID ${req.body.UID} REMOVED`,
+        `DEPARTMENT WITH TMID ${req.body.UID} REMOVED`,
         200
       );
     });
@@ -72,12 +72,12 @@ async function add(req: any, res: any) {
 async function update(req: any, res: any) {
   try {
     const REQ_BODY: any = req.body;
-    if (REQ_BODY.DID && REQ_BODY.name && REQ_BODY.projects) {
+    if (REQ_BODY.TMID && REQ_BODY.name && REQ_BODY.projects) {
       queries.update(REQ_BODY).then(() => {
         responses.success(
           req,
           res,
-          `UPDATED DEPARTMENT WITH DID ${REQ_BODY.DID}`,
+          `UPDATED DEPARTMENT WITH TMID ${REQ_BODY.TMID}`,
           200
         );
       });

@@ -4,7 +4,7 @@ import morgan from "morgan";
 
 import appConfig from "./appConfig";
 import USERS_ROUTING from "./endpoints/users/router";
-import DEPARTMENTS_ROUTING from "./endpoints/departments/router";
+import TEAMS_ROUTING from "./endpoints/teams/router";
 import PROJECTS_ROUTING from "./endpoints/projects/router";
 import REPORTS_ROUTING from "./endpoints/reports/router";
 import TASKS_ROUTING from "./endpoints/tasks/router";
@@ -32,7 +32,7 @@ app.set("port", appConfig.app.port);
 
 // ROUTING
 app.use("/users", USERS_ROUTING);
-app.use("/departments", DEPARTMENTS_ROUTING);
+app.use("/teams", TEAMS_ROUTING);
 app.use("/projects", PROJECTS_ROUTING);
 app.use("/reports", REPORTS_ROUTING);
 app.use("/tasks", TASKS_ROUTING);

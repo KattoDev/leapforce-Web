@@ -1,9 +1,9 @@
 import { connection } from "../../database/mysql";
 
-const TABLE = "departments";
+const TABLE = "teams";
 
 /**
- * Get `all` entries in the **departments table**
+ * Get `all` entries in the **teams table**
  *
  * @returns the entries if the query is successfull otherwise returns a error
  */
@@ -16,16 +16,16 @@ function getAllEntries() {
 }
 
 /**
- * Get the entry with a specific `id` in the **departments table**
+ * Get the entry with a specific `id` in the **teams table**
  *
- * @param DID the department id to query
+ * @param TMID the team id to query
  *
  * @returns the entries if the query is successfull otherwise returns a error
  */
-function getUniqueViaID(DID: number) {
+function getUniqueViaID(TMID: number) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT * FROM ${TABLE} WHERE DID = ${DID}`,
+      `SELECT * FROM ${TABLE} WHERE TMID = ${TMID}`,
       (err, res) => {
         return err ? reject(err) : resolve(res);
       }
@@ -34,7 +34,7 @@ function getUniqueViaID(DID: number) {
 }
 
 /**
- * Adds to **departments table** the data with the standard information.
+ * Adds to **teams table** the data with the standard information.
  *
  * **MUST CONTAIN: [name]**
  *
@@ -57,22 +57,25 @@ function add(data: any) {
 }
 
 /**
- * `remove a entry` in the **departments table** with specific `id`.
+ * `remove a entry` in the **teams table** with specific `id`.
  *
- * @param DID the department's id to remove
+ * @param TMID the team's id to remove
  *
  * @returns the entries if the query is successfull otherwise returns a error
  */
-function remove(DID: number) {
+function remove(TMID: number) {
   return new Promise((resolve, reject) => {
-    connection.query(`DELETE FROM ${TABLE} WHERE DID = ${DID}`, (err, res) => {
-      return err ? reject(err) : resolve(res);
-    });
+    connection.query(
+      `DELETE FROM ${TABLE} WHERE TMID = ${TMID}`,
+      (err, res) => {
+        return err ? reject(err) : resolve(res);
+      }
+    );
   });
 }
 
 /**
- * **Patch** the information of a department
+ * **Patch** the information of a team
  *
  * @todo update the function to work only with necesary data
  * @param data the data with the patch info
@@ -85,7 +88,7 @@ function update(data: any) {
         UPDATE ${TABLE} SET
         name = "${data.name}",
         projects = "${data.projects}"
-        WHERE DID = ${data.DID}; `,
+        WHERE TMID = ${data.TMID}; `,
       (err, res) => {
         return err ? reject(err) : resolve(res);
       }

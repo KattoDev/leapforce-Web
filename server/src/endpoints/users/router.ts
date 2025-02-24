@@ -4,7 +4,7 @@ import routerFunctions from "./routerFunctions";
 const USERS_ROUTING = express.Router();
 
 USERS_ROUTING.get("/", routerFunctions.getAll);
-USERS_ROUTING.get("/:id", routerFunctions.getUniqueViaID);
+USERS_ROUTING.get("/:uid", routerFunctions.getUniqueViaID);
 
 USERS_ROUTING.post("/", routerFunctions.add);
 
