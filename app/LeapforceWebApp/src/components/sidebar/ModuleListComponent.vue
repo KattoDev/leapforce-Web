@@ -30,17 +30,13 @@ function navigate(route: string): void {
 .module-container {
   margin: 20px 20px 0 20px;
 
-  border: 1px solid red;
-
   .module {
     margin: 5px 0 0 0;
-    background-color: blueviolet;
-    border: 1px solid blue;
+    background-color: var(--login-box);
 
     div {
       display: flex;
       align-items: center;
-      border: 1px solid black;
       height: 30px;
       padding: 0 0 0 20px;
 
@@ -51,6 +47,12 @@ function navigate(route: string): void {
         align-items: center;
         padding: 0 0 0 20px;
         gap: 40px;
+        background-color: var(--sidebar-button);
+        border: none;
+      }
+
+      button:hover {
+        border: 1px dashed var(--shadow);
       }
     }
   }
