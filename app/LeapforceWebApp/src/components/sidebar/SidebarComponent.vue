@@ -4,42 +4,32 @@ import ModuleListComponent from './ModuleListComponent.vue'
 
 const MANAGEMENT_LIST: ModuleList[] = [
   {
-    name: 'module 1',
+    name: 'Miembros del equipo',
     children: [
       {
-        name: 'submodule 1',
+        name: 'Listar',
         icon: 'icon submodule',
-        route: 'route 1',
+        route: '/team-members',
       },
       {
-        name: 'submodule 2',
+        name: 'Editar información',
         icon: 'icon submodule',
-        route: 'route 2',
-      },
-      {
-        name: 'submodule 2',
-        icon: 'icon submodule',
-        route: 'route 2',
+        route: '/edit-team-member',
       },
     ],
   },
   {
-    name: 'module 2',
+    name: 'Equipos de trabajo',
     children: [
       {
-        name: 'submodule 1',
+        name: 'Listar',
         icon: 'icon submodule',
-        route: 'route 1',
+        route: '/teams',
       },
       {
-        name: 'submodule 2',
+        name: 'Administrar',
         icon: 'icon submodule',
-        route: 'route 2',
-      },
-      {
-        name: 'submodule 2',
-        icon: 'icon submodule',
-        route: 'route 2',
+        route: '/edit-team-info',
       },
     ],
   },
@@ -47,22 +37,17 @@ const MANAGEMENT_LIST: ModuleList[] = [
 
 const GENERAL_LIST: ModuleList[] = [
   {
-    name: 'module 1',
+    name: 'Tareas y proyectos',
     children: [
       {
-        name: 'submodule 1',
+        name: 'Gestion de tareas',
         icon: 'icon submodule',
-        route: 'route 1',
+        route: '/tasks',
       },
       {
-        name: 'submodule 2',
+        name: 'Gestion de Proyectos',
         icon: 'icon submodule',
-        route: 'route 2',
-      },
-      {
-        name: 'submodule 2',
-        icon: 'icon submodule',
-        route: 'route 2',
+        route: '/projects',
       },
     ],
   },
