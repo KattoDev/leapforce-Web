@@ -25,7 +25,7 @@ async function getAll(req: any, res: any) {
  */
 async function getUniqueViaID(req: any, res: any) {
   try {
-    await queries.getUniqueViaID(req.params.id).then((items) => {
+    await queries.getUniqueViaID(req.params.TMID).then((items) => {
       responses.success(req, res, items, 200);
     });
   } catch (error) {

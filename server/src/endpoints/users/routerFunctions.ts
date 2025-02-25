@@ -2,32 +2,34 @@ import queries from "./queries";
 import responses from "../../web/responses";
 
 /**
- * if the request body is empty:
- *
  * - Get all the entries of the users table
- *
- * if the request body contains `email and password`:
- *
- * - Get the specific entry
- *
  *
  * @param req the request
  * @param res the response
  */
 async function getAll(req: any, res: any) {
   try {
-    // if the request body is not empty query via login
-    if (req.body.email && req.body.password) {
-      await queries
-        .getUniqueViaLogin(req.body.email, req.body.password)
-        .then((items) => {
-          responses.success(req, res, items, 200);
-        });
-    } else {
-      await queries.getAllEntries().then((items) => {
+    await queries.getAllEntries().then((items) => {
+      responses.success(req, res, items, 200);
+    });
+  } catch (error) {
+    responses.error(req, res, error, 500);
+  }
+}
+
+/**
+ * gets the user info with the url query [/?email=email&password=password]
+ *
+ * @param req the request
+ * @param res the response
+ */
+async function getUniqueViaLogin(req: any, res: any) {
+  try {
+    await queries
+      .getUniqueViaLogin(req.query.email, req.query.password)
+      .then((items) => {
         responses.success(req, res, items, 200);
       });
-    }
   } catch (error) {
     responses.error(req, res, error, 500);
   }
@@ -123,4 +125,11 @@ async function update(req: any, res: any) {
   }
 }
 
-export default { add, remove, getUniqueViaID, getAll, update };
+export default {
+  add,
+  remove,
+  getUniqueViaID,
+  getUniqueViaLogin,
+  getAll,
+  update,
+};
