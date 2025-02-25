@@ -1,11 +1,21 @@
-<script setup>
-import { User } from '@/components/dummyInfo'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { getMethod } from '../queryComponent'
+import { user } from '../userInfo'
+
+onMounted(async () => {
+  const USER_TEAM: number = JSON.parse(localStorage.getItem('session') || '')[0].team
+
+  getMethod(`teams/${USER_TEAM}`).then((data) => {
+    user.value.team = data.body[0].name
+  })
+})
 </script>
 
 <template>
   <div>
     <p id="title">Tu equipo de trabajo</p>
-    <p>{{ User.team }}</p>
+    <p>{{ user.team }}</p>
   </div>
 </template>
 

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { User } from '@/components/dummyInfo'
+import { onMounted, ref } from 'vue'
+import { sessionGuard } from '@/components/pageGuard'
+import { getMethod } from '../queryComponent'
+import { user } from '../userInfo'
+
+sessionGuard()
 
 function getGreeting(): string {
   let localhour: number = new Date().getHours()
@@ -12,12 +17,20 @@ function getGreeting(): string {
     return 'Buenas noches 🌛'
   }
 }
+
+onMounted(async () => {
+  const USER_UID: number = JSON.parse(localStorage.getItem('session') || '')[0].uid
+
+  getMethod(`users/${USER_UID}`).then((data) => {
+    user.value.name = data.body[0].name
+  })
+})
 </script>
 
 <template>
   <div>
     <p>{{ getGreeting() }}</p>
-    <p id="user-name">{{ User.name }}</p>
+    <p id="user-name">{{ user.name }}</p>
   </div>
 </template>
 

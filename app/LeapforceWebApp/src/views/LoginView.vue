@@ -1,4 +1,49 @@
-<script setup></script>
+<script setup lang="ts">
+import router from '@/router'
+import { ref } from 'vue'
+
+const formData = ref({
+  email: '',
+  password: '',
+})
+
+async function sendLoginForm() {
+  try {
+    const url: URL = new URL('http://localhost:4444/users/')
+    url.searchParams.append('email', formData.value.email)
+    url.searchParams.append('password', formData.value.password)
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await response.json()
+
+    if (Object.keys(data.body).length === 0) {
+      alert('Datos incorrectos')
+    } else {
+      const user = data.body[0]
+
+      const sessionJSON = [
+        {
+          uid: user.UID,
+          isAdmin: user.isAdmin,
+          team: user.team,
+        },
+      ]
+
+      localStorage.setItem('session', JSON.stringify(sessionJSON))
+
+      router.push('dashboard')
+    }
+  } catch (error) {
+    alert(error)
+  }
+}
+</script>
 
 <template>
   <div id="container">
@@ -12,12 +57,12 @@
       </div>
       <div id="login-container">
         <p id="login-title">Inicio de sesión</p>
-        <form>
+        <form @submit.prevent="sendLoginForm" method="get">
           <div>
-            <input type="email" name="email" placeholder="email" />
+            <input type="email" v-model="formData.email" placeholder="email" />
           </div>
           <div>
-            <input type="password" name="password" placeholder="password" />
+            <input type="password" v-model="formData.password" placeholder="password" />
           </div>
           <div id="button-container"><button>Iniciar sesión</button></div>
         </form>
