@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from '@/router'
 import type { ModuleList } from './ModuleInterface'
 import ModuleListComponent from './ModuleListComponent.vue'
 
@@ -58,6 +59,12 @@ const GENERAL_LIST: ModuleList[] = [
     ],
   },
 ]
+
+function logout() {
+  sessionStorage.clear()
+  router.push('/')
+  window.location.reload()
+}
 </script>
 
 <template>
@@ -65,6 +72,8 @@ const GENERAL_LIST: ModuleList[] = [
   <hr />
   <ModuleListComponent :ModuleName="'Gestion de equipos'" :list="MANAGEMENT_LIST" />
   <ModuleListComponent :ModuleName="'General'" :list="GENERAL_LIST" />
+  <hr />
+  <button v-on:click="logout">Cerrar sesión</button>
 </template>
 
 <style scoped>

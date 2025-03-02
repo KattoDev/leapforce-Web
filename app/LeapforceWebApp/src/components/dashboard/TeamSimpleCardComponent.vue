@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { getMethod } from '../queryComponent'
-import { user } from '../interfaces'
+import { user } from '@/stores/references'
+import { User } from '@/stores/Classes/User'
 
 onMounted(async () => {
-  const USER_TEAM: number = JSON.parse(localStorage.getItem('session') || '')[0].team
-
-  getMethod(`teams/${USER_TEAM}`).then((data) => {
+  getMethod(`teams/${new User().team}`).then((data) => {
     user.value.team = data.body[0].name
   })
 })

@@ -1,47 +1,19 @@
 <script setup lang="ts">
-import router from '@/router'
 import { ref } from 'vue'
+import { loginGuard } from '@/components/pageGuard'
+import { User } from '@/stores/Classes/User'
 
 const formData = ref({
   email: '',
   password: '',
 })
 
+loginGuard()
+
 async function sendLoginForm() {
-  try {
-    const url: URL = new URL('http://localhost:4444/users/')
-    url.searchParams.append('email', formData.value.email)
-    url.searchParams.append('password', formData.value.password)
+  const user = new User({ email: formData.value.email, password: formData.value.password })
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-
-    const data = await response.json()
-
-    if (Object.keys(data.body).length === 0) {
-      alert('Datos incorrectos')
-    } else {
-      const user = data.body[0]
-
-      const sessionJSON = [
-        {
-          uid: user.UID,
-          isAdmin: user.isAdmin,
-          team: user.team,
-        },
-      ]
-
-      localStorage.setItem('session', JSON.stringify(sessionJSON))
-
-      router.push('dashboard')
-    }
-  } catch (error) {
-    alert(error)
-  }
+  user.Login()
 }
 </script>
 

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import { sessionGuard } from '@/components/pageGuard'
-import { getMethod } from '../queryComponent'
-import { user } from '../interfaces'
+import { User } from '@/stores/Classes/User'
 
 sessionGuard()
 
@@ -18,13 +16,7 @@ function getGreeting(): string {
   }
 }
 
-onMounted(async () => {
-  const USER_UID: number = JSON.parse(localStorage.getItem('session') || '')[0].uid
-
-  getMethod(`users/${USER_UID}`).then((data) => {
-    user.value.name = data.body[0].name
-  })
-})
+const user: User = new User()
 </script>
 
 <template>
