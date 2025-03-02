@@ -51,6 +51,12 @@ const GENERAL_LIST: ModuleList[] = [
       },
     ],
   },
+  {
+    name: 'perfil de usuario',
+    children: [
+      { name: 'editar perfil del usuario', icon: 'icon submodule', route: '/dashboard/profile' },
+    ],
+  },
 ]
 </script>
 

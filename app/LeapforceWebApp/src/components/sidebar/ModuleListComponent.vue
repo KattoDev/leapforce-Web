@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import type { ModuleList } from './ModuleInterface'
 import router from '@/router'
 
