@@ -55,10 +55,10 @@ function getUniqueViaLogin(email: string, password: string) {
 /**
  * Adds to **users table** the data with the standard information.
  *
- * such as `name, address, birthDay, phone, email, department, position, salary, password, isAdmin`
+ * such as `name, address, birthDay, phone, email, team, position, salary, password, isAdmin`
  * @param data data with the standard information
  *
- * **MUST CONTAIN: [name, address, birthDay, phone, email, department, position, salary, password, isAdmin]**
+ * **MUST CONTAIN: [name, address, birthDay, phone, email, team, position, salary, password, isAdmin]**
  *
  * @returns the entries if the query is successfull otherwise returns a error
  */
@@ -66,14 +66,14 @@ function add(data: any) {
   return new Promise((resolve, reject) => {
     connection.query(
       `INSERT INTO ${TABLE}
-      (name, address, birthDay, phone, email, department, position, password, isAdmin)
+      (name, address, birthDay, phone, email, team, position, password, isAdmin)
       VALUES
       ("${data.name}",
       ${data.address},
       "${data.birthDay}",
       "${data.phone}",
       "${data.email}",
-      "${data.department}",
+      "${data.team}",
       "${data.position}",
       "${data.password}",
       ${data.isAdmin})`,
@@ -116,7 +116,7 @@ function update(data: any) {
       birthDay = "${data.birthDay}",
       phone = "${data.phone}",
       email = "${data.email}",
-      department = "${data.department}",
+      team = "${data.team}",
       position = "${data.position}",
       password = "${data.password}",
       isAdmin = ${data.isAdmin}

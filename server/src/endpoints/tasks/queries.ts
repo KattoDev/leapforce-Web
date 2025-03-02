@@ -86,7 +86,7 @@ function update(data: any) {
         name = "${data.name}",
         description = "${data.description}",
         endDate = "${data.endDate}",
-        department = "${data.department}",
+        team = "${data.team}",
         finished = ${data.finished},
         WHERE PID = ${data.PID}; `,
       (err, res) => {

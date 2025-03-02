@@ -82,7 +82,7 @@ async function add(req: any, res: any) {
       REQ_BODY.birthDay &&
       REQ_BODY.phone &&
       REQ_BODY.email &&
-      REQ_BODY.department &&
+      REQ_BODY.team &&
       REQ_BODY.position &&
       REQ_BODY.password &&
       REQ_BODY.isAdmin
@@ -106,7 +106,7 @@ async function update(req: any, res: any) {
       REQ_BODY.birthDay &&
       REQ_BODY.phone &&
       REQ_BODY.email &&
-      REQ_BODY.department &&
+      REQ_BODY.team &&
       REQ_BODY.position &&
       REQ_BODY.password &&
       REQ_BODY.isAdmin
