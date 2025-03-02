@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { getMethod } from '../queryComponent'
-import { user } from '../userInfo'
+import { user } from '../interfaces'
 
 onMounted(async () => {
   const USER_TEAM: number = JSON.parse(localStorage.getItem('session') || '')[0].team

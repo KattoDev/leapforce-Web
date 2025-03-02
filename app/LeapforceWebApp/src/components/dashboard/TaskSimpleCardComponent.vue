@@ -36,7 +36,7 @@ function goToTasks(): void {
         </thead>
         <tbody>
           <tr v-for="task in User.tasks">
-            <td>{{ task.taskName }}</td>
+            <td>{{ task.name }}</td>
             <td>{{ task.status ? 'completada' : 'sin completar' }}</td>
             <td>
               {{ task.deadline.getDay() }}/{{ task.deadline.getMonth() }}/{{

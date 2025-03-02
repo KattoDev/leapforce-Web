@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { sessionGuard } from '@/components/pageGuard'
 import { getMethod } from '../queryComponent'
-import { user } from '../userInfo'
+import { user } from '../interfaces'
 
 sessionGuard()
 
