@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { sessionGuard } from '@/components/pageGuard'
+import { Session } from '@/stores/Classes/Session'
 import { User } from '@/stores/Classes/User'
 
 sessionGuard()
@@ -16,7 +17,7 @@ function getGreeting(): string {
   }
 }
 
-const user: User = new User()
+const user: User = new Session()
 </script>
 
 <template>

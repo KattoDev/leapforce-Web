@@ -10,12 +10,12 @@ const MANAGEMENT_LIST: ModuleList[] = [
       {
         name: 'Listar',
         icon: 'icon submodule',
-        route: '/team-members',
+        route: '/dashboard/members-management/list',
       },
       {
         name: 'Editar información',
         icon: 'icon submodule',
-        route: '/edit-team-member',
+        route: '/dashboard/members-management/edit',
       },
     ],
   },
@@ -68,12 +68,12 @@ function logout() {
 </script>
 
 <template>
-  <div id="app-name" class="megrim"><p>LEAPFORCE</p></div>
+  <div id="app-name" class="megrim"><p @click="router.push('/dashboard')">LEAPFORCE</p></div>
   <hr />
   <ModuleListComponent :ModuleName="'Gestion de equipos'" :list="MANAGEMENT_LIST" />
   <ModuleListComponent :ModuleName="'General'" :list="GENERAL_LIST" />
   <hr />
-  <button v-on:click="logout">Cerrar sesión</button>
+  <button @click="logout">Cerrar sesión</button>
 </template>
 
 <style scoped>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 import { sessionGuard } from '@/components/pageGuard'
-import { ref, onMounted } from 'vue'
-import { getMethod, patchMethod } from '../components/queryComponent'
+import { ref } from 'vue'
+import { Session } from '@/stores/Classes/Session'
 import { User } from '@/stores/Classes/User'
 
 sessionGuard()
@@ -16,21 +16,13 @@ const formData = ref({
   showPassword: false,
 })
 
-let user: User = new User()
+let user: User = new Session()
 
 formData.value.name = user.name
 formData.value.phone = user.phone
 formData.value.email = user.email
 formData.value.password = user.password
 formData.value.validatePassword = user.password
-
-function togglePassword() {
-  const passwordField: NodeListOf<HTMLElement> = document.querySelectorAll('.passwordField')
-
-  formData.value.showPassword
-    ? passwordField.forEach((field: HTMLElement) => (field.type = 'text'))
-    : passwordField.forEach((field: HTMLElement) => (field.type = 'password'))
-}
 
 function validatePasswordField(): boolean {
   return formData.value.password === formData.value.validatePassword ? true : false
@@ -84,7 +76,7 @@ async function updateProfile() {
           </div>
           <div class="form-input">
             <input
-              type="password"
+              :type="formData.showPassword ? 'text' : 'password'"
               placeholder="Contraseña"
               v-model="formData.password"
               required
@@ -93,13 +85,13 @@ async function updateProfile() {
               :class="!validatePasswordField() ? 'not-valid' : ''"
             />
             <div id="toggle-password">
-              <input type="checkbox" v-on:change="togglePassword" v-model="formData.showPassword" />
-              <label for="showPassword">Ver contraseña</label>
+              <input type="checkbox" v-model="formData.showPassword" />
+              <label>Ver contraseña</label>
             </div>
           </div>
           <div class="form-input">
             <input
-              type="password"
+              :type="formData.showPassword ? 'text' : 'password'"
               placeholder="Validar contraseña"
               v-model="formData.validatePassword"
               class="passwordField"
@@ -127,12 +119,9 @@ async function updateProfile() {
   border-radius: 10px;
   overflow: hidden;
 
-  .module-name {
-    margin: 20px 0 0 20px;
-  }
-
   #form-container {
     height: 96%;
+
     form {
       margin: 30px 0 0 20px;
 
@@ -166,6 +155,7 @@ async function updateProfile() {
           font-size: 1em;
           background: var(--login-gradient);
         }
+
         button:hover {
           box-shadow: 0 0 12px var(--shadow);
           cursor: pointer;

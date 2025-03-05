@@ -1,7 +1,7 @@
-<script setup>
-import TaskSimpleCardComponent from '@/components/dashboard/TaskSimpleCardComponent.vue'
-import TeamSimpleCardComponent from '@/components/dashboard/TeamSimpleCardComponent.vue'
-import UserSimpleCardComponent from '@/components/dashboard/UserSimpleCardComponent.vue'
+<script setup lang="ts">
+import TasksComponent from '@/components/dashboard/simple_cards/TasksComponent.vue'
+import TeamComponent from '@/components/dashboard/simple_cards/TeamComponent.vue'
+import UserComponent from '@/components/dashboard/simple_cards/UserComponent.vue'
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 </script>
 
@@ -11,10 +11,10 @@ import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
       <SidebarComponent />
     </div>
     <div class="content">
-      <UserSimpleCardComponent class="card" />
+      <UserComponent class="card" />
       <div id="frame">
-        <TaskSimpleCardComponent class="card" />
-        <TeamSimpleCardComponent class="card" />
+        <TasksComponent class="card" />
+        <TeamComponent class="card" />
       </div>
     </div>
   </div>

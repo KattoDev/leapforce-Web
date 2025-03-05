@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { loginGuard } from '@/components/pageGuard'
-import { User } from '@/stores/Classes/User'
+import { Session } from '@/stores/Classes/Session'
+import type { User } from '@/stores/Classes/User'
 
 const formData = ref({
   email: '',
@@ -11,7 +12,10 @@ const formData = ref({
 loginGuard()
 
 async function sendLoginForm() {
-  const user = new User({ email: formData.value.email, password: formData.value.password })
+  const user: User = new Session()
+
+  user.email = formData.value.email
+  user.password = formData.value.password
 
   user.Login()
 }

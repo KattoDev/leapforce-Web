@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { User } from '@/components/dummyInfo'
 import router from '@/router'
+import TableComponent from '../TableComponent.vue'
+import { user } from '@/stores/references'
 
 let userPendingTasks: number = User.tasks.length
 
@@ -13,6 +15,26 @@ function getPendingTasks(): string {
 function goToTasks(): void {
   router.push('/tasks')
 }
+
+interface Task {
+  name: string
+  status: string
+  deadline: string
+}
+
+let userTasks: Array<Task> = []
+
+User.tasks.forEach((value) => {
+  let task: Task = {
+    name: value.name,
+    status: value.status ? 'completada' : 'pendiente',
+    deadline: `${value.deadline.getDay()}/${value.deadline.getMonth()}/${value.deadline.getFullYear()} - ${value.deadline.getHours()}:${value.deadline.getMinutes()}`,
+  }
+  userTasks.push(task)
+})
+
+const tableHead: Array<string> = ['nombre', 'estado', 'fecha de entrega']
+const tableBody: Array<Task> = userTasks
 </script>
 
 <template>
@@ -26,26 +48,7 @@ function goToTasks(): void {
     </div>
 
     <div id="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Estado</th>
-            <th>Fecha de fin</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="task in User.tasks">
-            <td>{{ task.name }}</td>
-            <td>{{ task.status ? 'completada' : 'sin completar' }}</td>
-            <td>
-              {{ task.deadline.getDay() }}/{{ task.deadline.getMonth() }}/{{
-                task.deadline.getFullYear()
-              }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <TableComponent :table-head="tableHead" :table-body="tableBody" />
     </div>
   </div>
 </template>
@@ -85,25 +88,6 @@ function goToTasks(): void {
     height: 90%;
     overflow: scroll;
     scrollbar-width: none;
-
-    table {
-      margin: 10px 0 0 0;
-      border-collapse: collapse;
-      padding: 5px;
-      width: 100%;
-      height: 40dvh;
-      max-height: 40dvh;
-
-      th {
-        border: 1px solid black;
-        padding: 5px 0 5px 0;
-      }
-      td {
-        text-align: center;
-        border: 1px solid black;
-        padding: 10px 0 10px 0;
-      }
-    }
   }
 }
 </style>

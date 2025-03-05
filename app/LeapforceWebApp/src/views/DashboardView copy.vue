@@ -1,5 +1,8 @@
 <script setup>
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
+import { sessionGuard } from '@/components/pageGuard'
+
+sessionGuard()
 </script>
 
 <template>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { getMethod } from '../queryComponent'
+import { getMethod } from '../../queryComponent'
 import { user } from '@/stores/references'
-import { User } from '@/stores/Classes/User'
+import { Session } from '@/stores/Classes/Session'
 
 onMounted(async () => {
-  getMethod(`teams/${new User().team}`).then((data) => {
+  getMethod(`teams/${new Session().team}`).then((data) => {
     user.value.team = data.body[0].name
   })
 })
