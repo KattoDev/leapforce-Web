@@ -86,4 +86,13 @@ async function updateInfo() {}
 .content {
   border-radius: 10px;
 }
+
+.content {
+  background-color: var(--login-box);
+  box-shadow: 0 0 12px var(--shadow);
+  border-radius: 10px;
+  padding: 20px;
+  height: 93.5dvh;
+  overflow: scroll;
+}
 </style>
