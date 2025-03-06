@@ -25,12 +25,12 @@ const MANAGEMENT_LIST: ModuleList[] = [
       {
         name: 'Listar',
         icon: 'icon submodule',
-        route: '/teams',
+        route: '/dashboard/teams-management/list',
       },
       {
         name: 'Administrar',
         icon: 'icon submodule',
-        route: '/edit-team-info',
+        route: '/dashboard/teams-management/edit',
       },
     ],
   },
@@ -43,12 +43,12 @@ const GENERAL_LIST: ModuleList[] = [
       {
         name: 'Gestion de tareas',
         icon: 'icon submodule',
-        route: '/tasks',
+        route: '/dashboard/tasks-management',
       },
       {
         name: 'Gestion de Proyectos',
         icon: 'icon submodule',
-        route: '/projects',
+        route: '/dashboard/projects-management',
       },
     ],
   },
