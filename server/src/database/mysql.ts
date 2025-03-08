@@ -22,7 +22,7 @@ function connectToMySQL() {
       console.log("[DB error]", err);
       setTimeout(connectToMySQL, 200);
     } else {
-      console.log("[INFO] Connected to database");
+      console.log("\x1b[34m[INFO]\x1b[0m Connected to database");
     }
   });
 

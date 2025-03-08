@@ -22,7 +22,7 @@ interface User {
 async function getAll(req: any, res: any) {
   try {
     await new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM ${TABLE}`, (err, res) => {
+      connection.query(`SELECT * FROM ${TABLE}`, (err: any, res: any) => {
         return err ? reject(err) : resolve(res);
       });
     }).then((users: Array<User> | any) => {
@@ -45,9 +45,7 @@ async function getUniqueViaLogin(req: any, res: any): Promise<void> {
   try {
     new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM ${TABLE} WHERE 
-        email = "${req.query.email}" AND 
-        password = "${req.query.password}"`,
+        `SELECT * FROM ${TABLE} WHERE email = "${req.query.email}" AND password = "${req.query.password}"`,
         (err, res) => {
           return err ? reject(err) : resolve(res);
         }
@@ -70,9 +68,8 @@ async function getUniqueViaID(req: any, res: any): Promise<void> {
   try {
     await new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM ${TABLE} WHERE 
-        UID = ${req.params.UID}`,
-        (err, res) => {
+        `SELECT * FROM ${TABLE} WHERE UID = ${req.params.UID}`,
+        (err: any, res: any) => {
           return err ? reject(err) : resolve(res);
         }
       );
@@ -96,7 +93,7 @@ async function remove(req: any, res: any): Promise<void> {
       connection.query(
         `DELETE FROM ${TABLE} WHERE 
         UID = ${req.params.UID}`,
-        (err, res) => {
+        (err: any, res: any) => {
           return err ? reject(err) : resolve(res);
         }
       );
@@ -135,12 +132,12 @@ async function add(req: any, res: any): Promise<void> {
           "${req.body.team}",
           "${req.body.password}",
           ${req.body.isAdmin})`,
-          (err, res) => {
+          (err: any, res: any) => {
             return err ? reject(err) : resolve(res);
           }
         );
       }).then(() => {
-        responses.success(req, res, `USER ADDED`, 200);
+        responses.success(req, res, `USER ADDED`, 201);
       });
     }
   } catch (error: any) {
@@ -163,7 +160,7 @@ async function update(req: any, res: any): Promise<void> {
           team = "${req.body.team}",
           password = "${req.body.password}",
           isAdmin = ${req.body.isAdmin} WHERE UID = ${req.body.UID};`,
-          (err, res) => {
+          (err: any, res: any) => {
             return err ? reject(err) : resolve(res);
           }
         );
