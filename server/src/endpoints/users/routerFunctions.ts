@@ -14,33 +14,21 @@ interface User {
 }
 
 /**
- * if the request body is empty:
- *
- * - Get all the entries of the users table
- *
- * if the request body contains `email and password`:
- *
- * - Get the specific entry
- *
+ * Get all the entries of the `users` table
  *
  * @param req the request
  * @param res the response
  */
 async function getAll(req: any, res: any) {
   try {
-    // if the request body is not empty query via login
-    if (req.body.email && req.body.password) {
-      await queries
-        .getUniqueViaLogin(req.body.email, req.body.password)
-        .then((items) => {
-          responses.success(req, res, items, 200);
-        });
-    } else {
-      await queries.getAllEntries().then((items) => {
-        responses.success(req, res, items, 200);
+    await new Promise((resolve, reject) => {
+      connection.query(`SELECT * FROM ${TABLE}`, (err, res) => {
+        return err ? reject(err) : resolve(res);
       });
-    }
-  } catch (error) {
+    }).then((users: Array<User> | any) => {
+      responses.success(req, res, users, 200);
+    });
+  } catch (error: any) {
     responses.error(req, res, error, 500);
   }
 }
@@ -133,20 +121,25 @@ async function remove(req: any, res: any): Promise<void> {
  */
 async function add(req: any, res: any): Promise<void> {
   try {
-    const REQ_BODY: any = req.body;
-    if (
-      REQ_BODY.UID &&
-      REQ_BODY.name &&
-      REQ_BODY.address &&
-      REQ_BODY.birthDay &&
-      REQ_BODY.phone &&
-      REQ_BODY.email &&
-      REQ_BODY.department &&
-      REQ_BODY.position &&
-      REQ_BODY.password &&
-      REQ_BODY.isAdmin
-    ) {
-      queries.add(req.body).then(() => {
+    if (!bodyValidator(req.body)) {
+      throw new Error("UPDATE REQUEST BODY IS INCOMPLETE");
+    } else {
+      await new Promise((resolve, reject) => {
+        connection.query(
+          `INSERT INTO ${TABLE}
+          (name, phone, email, team, password, isAdmin)
+          VALUES
+          ("${req.body.name}",
+          "${req.body.phone}",
+          "${req.body.email}",
+          "${req.body.team}",
+          "${req.body.password}",
+          ${req.body.isAdmin})`,
+          (err, res) => {
+            return err ? reject(err) : resolve(res);
+          }
+        );
+      }).then(() => {
         responses.success(req, res, `USER ADDED`, 200);
       });
     }
@@ -157,20 +150,24 @@ async function add(req: any, res: any): Promise<void> {
 
 async function update(req: any, res: any): Promise<void> {
   try {
-    const REQ_BODY: any = req.body;
-    if (
-      REQ_BODY.UID &&
-      REQ_BODY.name &&
-      REQ_BODY.address &&
-      REQ_BODY.birthDay &&
-      REQ_BODY.phone &&
-      REQ_BODY.email &&
-      REQ_BODY.department &&
-      REQ_BODY.position &&
-      REQ_BODY.password &&
-      REQ_BODY.isAdmin
-    ) {
-      queries.update(REQ_BODY).then(() => {
+    if (!bodyValidator(req.body)) {
+      throw new Error("UPDATE REQUEST BODY IS INCOMPLETE");
+    } else {
+      await new Promise((resolve, reject) => {
+        connection.query(
+          `
+          UPDATE ${TABLE} SET
+          name = "${req.body.name}",
+          phone = "${req.body.phone}",
+          email = "${req.body.email}",
+          team = "${req.body.team}",
+          password = "${req.body.password}",
+          isAdmin = ${req.body.isAdmin} WHERE UID = ${req.body.UID};`,
+          (err, res) => {
+            return err ? reject(err) : resolve(res);
+          }
+        );
+      }).then(() => {
         responses.success(
           req,
           res,
@@ -184,7 +181,24 @@ async function update(req: any, res: any): Promise<void> {
   }
 }
 
-export default { add, remove, getUniqueViaID, getAll, update };
+/**
+ * function to validate if the body has the basic User implementations
+ *
+ * @returns true if the body is complete
+ * @returns false if the body is incomplete
+ */
+function bodyValidator(body: User): boolean {
+  if (
+    !body.name &&
+    !body.phone &&
+    !body.email &&
+    !body.team &&
+    !body.password &&
+    !body.isAdmin
+  ) {
+    return false;
+  } else return true;
+}
 
 export default {
   add,
