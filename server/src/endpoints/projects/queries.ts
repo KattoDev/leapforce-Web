@@ -36,10 +36,10 @@ function getUniqueViaID(PID: number) {
 /**
  * Adds to **projects table** the data with the standard information.
  *
- * such as `name, description, endDate, department, finished`
+ * such as `name, description, endDate, team, finished`
  * @param data data with the standard information
  *
- * **MUST CONTAIN: [name, description, endDate, department, finished]**
+ * **MUST CONTAIN: [name, description, endDate, team, finished]**
  *
  * @returns the entries if the query is successfull otherwise returns a error
  */
@@ -47,9 +47,9 @@ function add(data: any) {
   return new Promise((resolve, reject) => {
     connection.query(
       `INSERT INTO ${TABLE}
-      (name, description, endDate, department, finished)
+      (name, description, endDate, team, finished)
       VALUES
-      ("${data.name}", "${data.description}", "${data.endDate}", "${data.department}", ${data.finished})`,
+      ("${data.name}", "${data.description}", "${data.endDate}", "${data.team}", ${data.finished})`,
       (err, res) => {
         return err ? reject(err) : resolve(res);
       }
@@ -87,7 +87,7 @@ function update(data: any) {
         name = "${data.name}",
         description = "${data.description}",
         endDate = "${data.endDate}",
-        department = "${data.department}",
+        team = "${data.team}",
         finished = ${data.finished},
         WHERE PID = ${data.PID}; `,
       (err, res) => {

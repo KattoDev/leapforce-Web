@@ -18,7 +18,7 @@ app.use(
   //CORS
   cors({
     origin: process.env.FRONTEND,
-    methods: ["GET, POST"],
+    methods: ["GET, POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type"],
   }),
   // MIDDLEWARE

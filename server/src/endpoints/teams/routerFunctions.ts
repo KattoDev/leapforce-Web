@@ -2,7 +2,7 @@ import queries from "./queries";
 import responses from "../../web/responses";
 
 /**
- * Get all the entries of the departments table
+ * Get all the entries of the teams table
  *
  * @param req the request
  * @param res the response
@@ -18,14 +18,14 @@ async function getAll(req: any, res: any) {
 }
 
 /**
- * Gets a unique entry of a department with a specific ID.
+ * Gets a unique entry of a team with a specific ID.
  *
  * @param req the request
  * @param res the response
  */
 async function getUniqueViaID(req: any, res: any) {
   try {
-    await queries.getUniqueViaID(req.params.id).then((items) => {
+    await queries.getUniqueViaID(req.params.TMID).then((items) => {
       responses.success(req, res, items, 200);
     });
   } catch (error) {
@@ -34,7 +34,7 @@ async function getUniqueViaID(req: any, res: any) {
 }
 
 /**
- * Method to remove an entry in the departments table
+ * Method to remove an entry in the teams table
  *
  * @param req the request entry in a JSON body
  * @param res the response
@@ -55,7 +55,7 @@ async function remove(req: any, res: any) {
 }
 
 /**
- * Method to add a entry to departments table
+ * Method to add a entry to teams table
  * @param req the request body in a JSON body
  * @param res the response
  */

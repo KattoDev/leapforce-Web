@@ -76,7 +76,7 @@ async function update(req: any, res: any) {
       REQ_BODY.name &&
       REQ_BODY.description &&
       REQ_BODY.endDate &&
-      REQ_BODY.department &&
+      REQ_BODY.team &&
       REQ_BODY.finished
     ) {
       queries.update(REQ_BODY).then(() => {
