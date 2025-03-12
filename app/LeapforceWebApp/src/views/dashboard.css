@@ -1,0 +1,90 @@
+.dashboard-container {
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+
+  .sidebar,
+  .content {
+    height: calc(100dvh - 22px);
+  }
+
+  .sidebar {
+    width: 25dvw;
+    background-color: var(--login-box);
+    box-shadow: 0 0 12px var(--shadow);
+  }
+
+  .content {
+    width: 75dvw;
+    gap: 10px;
+  }
+
+  .card {
+    background-color: var(--login-box);
+    box-shadow: 0 0 12px var(--shadow);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .module-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 20px 0 0 20px;
+  }
+
+  .form-input {
+    input {
+      font-family: 'Sono', serif;
+      height: 50px;
+      width: 400px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+      font-size: 1em;
+      border: none;
+      box-shadow: 0 0 12px var(--shadow);
+    }
+  }
+
+  .modal {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.9);
+    width: 100%;
+    height: 100%;
+
+    .close-btn {
+      display: flex;
+      justify-content: end;
+      padding: 0 10px 0 0;
+
+      p:hover {
+        cursor: pointer;
+      }
+    }
+
+    .form-input {
+      display: flex;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: end;
+    }
+
+    input[type='checkbox'] {
+      width: 20px;
+    }
+  }
+
+  .modal-hidden {
+    opacity: 0;
+    display: none;
+    z-index: -10;
+  }
+}
