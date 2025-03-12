@@ -1,17 +1,8 @@
 import responses from "../../web/responses";
 import { connection } from "../../database/mysql";
+import { User } from "../../web/globalInterfaces";
 
 const TABLE = "users";
-
-interface User {
-  UID: number;
-  name: string;
-  phone: number;
-  email: string;
-  team: number;
-  password: string;
-  isAdmin: boolean;
-}
 
 /**
  * Get all the entries of the `users` table
@@ -118,8 +109,15 @@ async function remove(req: any, res: any): Promise<void> {
  */
 async function add(req: any, res: any): Promise<void> {
   try {
-    if (!bodyValidator(req.body)) {
-      throw new Error("UPDATE REQUEST BODY IS INCOMPLETE");
+    if (
+      !req.body.name &&
+      !req.body.phone &&
+      !req.body.email &&
+      !req.body.team &&
+      !req.body.password &&
+      !req.body.isAdmin
+    ) {
+      throw new Error("ADD REQUEST BODY IS INCOMPLETE");
     } else {
       await new Promise((resolve, reject) => {
         connection.query(
@@ -147,7 +145,15 @@ async function add(req: any, res: any): Promise<void> {
 
 async function update(req: any, res: any): Promise<void> {
   try {
-    if (!bodyValidator(req.body)) {
+    if (
+      !req.body.UID &&
+      !req.body.name &&
+      !req.body.phone &&
+      !req.body.email &&
+      !req.body.team &&
+      !req.body.password &&
+      !req.body.isAdmin
+    ) {
       throw new Error("UPDATE REQUEST BODY IS INCOMPLETE");
     } else {
       await new Promise((resolve, reject) => {
@@ -178,30 +184,11 @@ async function update(req: any, res: any): Promise<void> {
   }
 }
 
-/**
- * function to validate if the body has the basic User implementations
- *
- * @returns true if the body is complete
- * @returns false if the body is incomplete
- */
-function bodyValidator(body: User): boolean {
-  if (
-    !body.name &&
-    !body.phone &&
-    !body.email &&
-    !body.team &&
-    !body.password &&
-    !body.isAdmin
-  ) {
-    return false;
-  } else return true;
-}
-
 export default {
   add,
   remove,
   getUniqueViaID,
   getUniqueViaLogin,
   getAll,
-  update, // TODO PENDING TO TEST
+  update,
 };

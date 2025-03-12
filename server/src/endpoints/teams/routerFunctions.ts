@@ -1,5 +1,6 @@
 import responses from "../../web/responses";
 import { connection } from "../../database/mysql";
+import { Team } from "../../web/globalInterfaces";
 
 const TABLE = "teams";
 
@@ -12,11 +13,11 @@ const TABLE = "teams";
 async function getAll(req: any, res: any) {
   try {
     await new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM ${TABLE}`, (err, res) => {
+      connection.query(`SELECT * FROM ${TABLE}`, (err: any, res: any) => {
         return err ? reject(err) : resolve(res);
       });
-    }).then((items) => {
-      responses.success(req, res, items, 200);
+    }).then((teams: Array<Team> | any) => {
+      responses.success(req, res, teams, 200);
     });
   } catch (error) {
     responses.error(req, res, error, 500);
@@ -33,14 +34,13 @@ async function getUniqueViaID(req: any, res: any) {
   try {
     await new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM ${TABLE} WHERE 
-        TMID = ${req.params.TMID}`,
-        (err, res) => {
+        `SELECT * FROM ${TABLE} WHERE TMID = ${req.params.TMID}`,
+        (err: any, res: any) => {
           return err ? reject(err) : resolve(res);
         }
       );
-    }).then((items) => {
-      responses.success(req, res, items, 200);
+    }).then((team: Team | any) => {
+      responses.success(req, res, team, 200);
     });
   } catch (error) {
     responses.error(req, res, error, 500);
@@ -57,8 +57,9 @@ async function remove(req: any, res: any) {
   try {
     await new Promise((resolve, reject) => {
       connection.query(
-        `DELETE FROM ${TABLE} WHERE TMID = ${req.body.TMID}`,
-        (err, res) => {
+        `DELETE FROM ${TABLE} WHERE 
+        TMID = ${req.params.TMID}`,
+        (err: any, res: any) => {
           return err ? reject(err) : resolve(res);
         }
       );
@@ -66,7 +67,7 @@ async function remove(req: any, res: any) {
       responses.success(
         req,
         res,
-        `TEAM WITH TMID ${req.body.UID} REMOVED`,
+        `TEAM WITH TMID ${req.params.TMID} REMOVED`,
         200
       );
     });
@@ -82,19 +83,23 @@ async function remove(req: any, res: any) {
  */
 async function add(req: any, res: any) {
   try {
-    new Promise((resolve, reject) => {
-      connection.query(
-        `INSERT INTO ${TABLE}
+    if (!req.body.name) {
+      throw new Error("ADD REQUEST BODY IS INCOMPLETE");
+    } else {
+      new Promise((resolve, reject) => {
+        connection.query(
+          `INSERT INTO ${TABLE}
           (name)
           VALUES
           ("${req.body.name}")`,
-        (err, res) => {
-          return err ? reject(err) : resolve(res);
-        }
-      );
-    }).then(() => {
-      responses.success(req, res, `TEAM ${req.body.name} ADDED`, 200);
-    });
+          (err: any, res: any) => {
+            return err ? reject(err) : resolve(res);
+          }
+        );
+      }).then(() => {
+        responses.success(req, res, `TEAM ${req.body.name} ADDED`, 201);
+      });
+    }
   } catch (error) {
     responses.error(req, res, error, 500);
   }
@@ -102,15 +107,16 @@ async function add(req: any, res: any) {
 
 async function update(req: any, res: any) {
   try {
-    const REQ_BODY: any = req.body;
-    if (REQ_BODY.TMID && REQ_BODY.name && REQ_BODY.projects) {
+    if (!req.body.TMID && !req.body.name && !req.body.projects) {
+      throw new Error("UPDATE BODY IS INCOMPLETE");
+    } else {
       new Promise((resolve, reject) => {
         connection.query(
           `
               UPDATE ${TABLE} SET
-              name = "${REQ_BODY.name}",
-              projects = "${REQ_BODY.projects}"
-              WHERE TMID = ${REQ_BODY.TMID}; `,
+              name = "${req.body.name}",
+              projects = "${req.body.projects}"
+              WHERE TMID = ${req.body.TMID}; `,
           (err, res) => {
             return err ? reject(err) : resolve(res);
           }
@@ -119,11 +125,11 @@ async function update(req: any, res: any) {
         responses.success(
           req,
           res,
-          `UPDATED TEAM WITH TMID ${REQ_BODY.TMID}`,
+          `UPDATED TEAM WITH TMID ${req.body.TMID}`,
           200
         );
       });
-    } else throw new Error("UPDATE REQUEST BODY IS INCOMPLETE");
+    }
   } catch (error) {
     responses.error(req, res, error, 500);
   }
