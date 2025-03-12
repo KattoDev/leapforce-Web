@@ -9,7 +9,7 @@ USERS_ROUTING.get("/:UID", routerFunctions.getUniqueViaID);
 
 USERS_ROUTING.post("/", routerFunctions.add);
 
-USERS_ROUTING.delete("/", routerFunctions.remove);
+USERS_ROUTING.delete("/:UID", routerFunctions.remove);
 
 USERS_ROUTING.patch("/", routerFunctions.update);
 

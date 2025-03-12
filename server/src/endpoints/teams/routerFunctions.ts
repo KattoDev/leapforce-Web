@@ -1,5 +1,8 @@
-import queries from "./queries";
 import responses from "../../web/responses";
+import { connection } from "../../database/mysql";
+import { Team } from "../../web/globalInterfaces";
+
+const TABLE = "teams";
 
 /**
  * Get all the entries of the teams table
@@ -9,8 +12,12 @@ import responses from "../../web/responses";
  */
 async function getAll(req: any, res: any) {
   try {
-    await queries.getAllEntries().then((items) => {
-      responses.success(req, res, items, 200);
+    await new Promise((resolve, reject) => {
+      connection.query(`SELECT * FROM ${TABLE}`, (err: any, res: any) => {
+        return err ? reject(err) : resolve(res);
+      });
+    }).then((teams: Array<Team> | any) => {
+      responses.success(req, res, teams, 200);
     });
   } catch (error) {
     responses.error(req, res, error, 500);
@@ -25,8 +32,15 @@ async function getAll(req: any, res: any) {
  */
 async function getUniqueViaID(req: any, res: any) {
   try {
-    await queries.getUniqueViaID(req.params.TMID).then((items) => {
-      responses.success(req, res, items, 200);
+    await new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT * FROM ${TABLE} WHERE TMID = ${req.params.TMID}`,
+        (err: any, res: any) => {
+          return err ? reject(err) : resolve(res);
+        }
+      );
+    }).then((team: Team | any) => {
+      responses.success(req, res, team, 200);
     });
   } catch (error) {
     responses.error(req, res, error, 500);
@@ -41,11 +55,19 @@ async function getUniqueViaID(req: any, res: any) {
  */
 async function remove(req: any, res: any) {
   try {
-    await queries.remove(req.body.UID).then(() => {
+    await new Promise((resolve, reject) => {
+      connection.query(
+        `DELETE FROM ${TABLE} WHERE 
+        TMID = ${req.params.TMID}`,
+        (err: any, res: any) => {
+          return err ? reject(err) : resolve(res);
+        }
+      );
+    }).then(() => {
       responses.success(
         req,
         res,
-        `DEPARTMENT WITH TMID ${req.body.UID} REMOVED`,
+        `TEAM WITH TMID ${req.params.TMID} REMOVED`,
         200
       );
     });
@@ -61,9 +83,23 @@ async function remove(req: any, res: any) {
  */
 async function add(req: any, res: any) {
   try {
-    queries.add(req.body).then(() => {
-      responses.success(req, res, `DEPARTMENT ADDED`, 200);
-    });
+    if (!req.body.name) {
+      throw new Error("ADD REQUEST BODY IS INCOMPLETE");
+    } else {
+      new Promise((resolve, reject) => {
+        connection.query(
+          `INSERT INTO ${TABLE}
+          (name)
+          VALUES
+          ("${req.body.name}")`,
+          (err: any, res: any) => {
+            return err ? reject(err) : resolve(res);
+          }
+        );
+      }).then(() => {
+        responses.success(req, res, `TEAM ${req.body.name} ADDED`, 201);
+      });
+    }
   } catch (error) {
     responses.error(req, res, error, 500);
   }
@@ -71,17 +107,29 @@ async function add(req: any, res: any) {
 
 async function update(req: any, res: any) {
   try {
-    const REQ_BODY: any = req.body;
-    if (REQ_BODY.TMID && REQ_BODY.name && REQ_BODY.projects) {
-      queries.update(REQ_BODY).then(() => {
+    if (!req.body.TMID && !req.body.name && !req.body.projects) {
+      throw new Error("UPDATE BODY IS INCOMPLETE");
+    } else {
+      new Promise((resolve, reject) => {
+        connection.query(
+          `
+              UPDATE ${TABLE} SET
+              name = "${req.body.name}",
+              projects = "${req.body.projects}"
+              WHERE TMID = ${req.body.TMID}; `,
+          (err, res) => {
+            return err ? reject(err) : resolve(res);
+          }
+        );
+      }).then(() => {
         responses.success(
           req,
           res,
-          `UPDATED DEPARTMENT WITH TMID ${REQ_BODY.TMID}`,
+          `UPDATED TEAM WITH TMID ${req.body.TMID}`,
           200
         );
       });
-    } else throw new Error("UPDATE REQUEST BODY IS INCOMPLETE");
+    }
   } catch (error) {
     responses.error(req, res, error, 500);
   }
