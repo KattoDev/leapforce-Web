@@ -1,0 +1,21 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /tasks/{taskId} {
+      allow read, write: if request.auth != null && checkStructure(request.resource.data)
+    }
+
+    function checkStructure(data) {
+      return data.keys().hasAll(["name", "status"]) &&
+             data.keys().size() == 2 &&
+             data.name is string &&
+             data.status in ["Pendiente", "En progreso", "Completada"]
+    }
+
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2025, 4, 16);
+    }
+  }
+}
