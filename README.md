@@ -58,7 +58,7 @@ Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 
 ### 4. añade las credenciales de firebase en el .env
 
-> - revisa el apartado de [acceso a la consola de firebase](blob/master/CONTRIBUTING.md#acceso-a-la-consola-de-firebase)
+> - revisa el apartado de [acceso a la consola de firebase](CONTRIBUTING.md#acceso-a-la-consola-de-firebase)
 > - ve a la consola de firebase
 > - ve a ajustes del proyecto **LeapforceApp**
 > - busca la app web de Leapforce y copia las credenciales de firebase, añadiendolas al .env de la siguiente manera:
@@ -86,4 +86,4 @@ Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 
 ¡Las contribuciones al proyecto siempre serán bienvenidas!
 
-Para más información revisa [CONTRIBUTING.md](blob/master/CONTRIBUTING.md).
+Para más información revisa [CONTRIBUTING.md](CONTRIBUTING.md).

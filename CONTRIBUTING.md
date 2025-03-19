@@ -20,7 +20,7 @@ Todo tipo de contribuciones son bienvenidas y valoradas. Consulta la [Tabla de C
 
 ## Código de Conducta
 
-Este proyecto y todos los que participan en él están sujetos al [Código de Conducta de CONTRIBUTING.md](blob/master/CODE_OF_CONDUCT.md). Al participar, se espera que cumplas con este código.
+Este proyecto y todos los que participan en él están sujetos al [Código de Conducta de CONTRIBUTING.md](CODE_OF_CONDUCT.md). Al participar, se espera que cumplas con este código.
 
 ## Quiero contribuir
 
