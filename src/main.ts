@@ -1,18 +1,28 @@
-import './assets/main.css'
+import "./assets/main.css";
+import "./assets/tailwind.css";
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createPinia } from "pinia";
+import { createApp } from "vue";
 
-import App from './App.vue'
-import router from './router'
+import App from "./App.vue";
+import router from "./router";
 
-import theme from './utils/controllers/theme'
+import Aura from "@primeuix/themes/aura";
+import PrimeVue from "primevue/config";
 
-const app = createApp(App)
+import theme from "./utils/controllers/theme";
 
-app.use(createPinia())
-app.use(router)
+const app = createApp(App);
 
-theme.set(localStorage.getItem('theme') || 'light')
+app.use(createPinia());
+app.use(router);
 
-app.mount('#app')
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+  },
+});
+
+theme.set(localStorage.getItem("theme") || "light");
+
+app.mount("#app");
