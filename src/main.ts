@@ -1,28 +1,35 @@
-import "./assets/main.css";
-import "./assets/tailwind.css";
-
 import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { createApp } from "vue";
 
 import App from "./App.vue";
 import router from "./router";
 
-import Aura from "@primeuix/themes/aura";
+import { ToastService } from "primevue";
 import PrimeVue from "primevue/config";
 
-import theme from "./utils/controllers/theme";
+import { LeapforceTheme } from "./utils/helpers/theme";
+
+import "./assets/main.css";
 
 const app = createApp(App);
 
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+
+app.use(pinia);
 app.use(router);
+
+app.use(ToastService);
 
 app.use(PrimeVue, {
   theme: {
-    preset: Aura,
+    preset: LeapforceTheme,
+    options: {
+      darkModeSelector: false,
+      cssLayer: false,
+    },
   },
 });
-
-theme.set(localStorage.getItem("theme") || "light");
 
 app.mount("#app");
