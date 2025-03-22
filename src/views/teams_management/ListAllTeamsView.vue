@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
-import type { Team } from '@/utils/Classes/Team'
-import leapforceResource from '@/utils/helpers/leapforceResource'
-import type { TeamCard } from '@/utils/interfaces/cards'
-import { onMounted, ref, type Ref } from 'vue'
+import SidebarComponent from "@/components/layout/SidebarComponent.vue";
+import type { Team } from "@/models/Team";
+import type { TeamCard } from "@/utils/types/cards";
+import { onMounted, ref, type Ref } from "vue";
 
-const teams: Ref<TeamCard[]> = ref([])
+const teams: Ref<TeamCard[]> = ref([]);
 
 onMounted(() => {
-  leapforceResource.get('teams').then((teamsRecived: Team[]) => {
+  leapforceResource.get("teams").then((teamsRecived: Team[]) => {
     const teamsLoaded: TeamCard[] = teamsRecived.map((team: Team) => ({
       TMID: team.TMID,
       name: team.name,
-    }))
+    }));
 
-    teams.value = teamsLoaded
-  })
-})
+    teams.value = teamsLoaded;
+  });
+});
 </script>
 
 <template>

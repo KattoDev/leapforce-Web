@@ -1,29 +1,52 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { Admin } from "@/models/Admin";
+import { Team } from "@/models/Team";
+import type { UserData } from "@/utils/types/FirestoreTables";
+import { ref } from "vue";
 
-const emit = defineEmits(['closeModal'])
+const emit = defineEmits(["closeModal"]);
 
 const modal = ref({
   stepTwo: false,
   newMember: {
-    name: '',
-    phone: '',
-    email: '',
-    team: '',
+    name: "",
+    phone: "",
+    email: "",
+    team: "",
     isAdmin: false,
   },
-})
+});
 
 function toggleStep() {
-  modal.value.stepTwo = !modal.value.stepTwo
+  modal.value.stepTwo = !modal.value.stepTwo;
 }
 
 function closeModal() {
-  emit('closeModal', true)
+  emit("closeModal", true);
 
   // reset modal values after close
-  modal.value.stepTwo = false
-  modal.value.newMember = { name: '', phone: '', email: '', team: '', isAdmin: false }
+  modal.value.stepTwo = false;
+  modal.value.newMember = {
+    name: "",
+    phone: "",
+    email: "",
+    team: "",
+    isAdmin: false,
+  };
+}
+
+async function createUser() {
+  const newUser: UserData = {
+    name: modal.value.newMember.name,
+    email: modal.value.newMember.email,
+    phone: modal.value.newMember.phone,
+    team: await new Team().getTeam(modal.value.newMember.team),
+    isAdmin: modal.value.newMember.isAdmin,
+  };
+
+  const admin = new Admin();
+
+  admin.createUser(newUser, newUser.phone);
 }
 </script>
 
@@ -72,7 +95,7 @@ function closeModal() {
         <div class="close-btn"><p @click="closeModal">x</p></div>
         <p>¡Ahora añadamos más información a {{ modal.newMember.name }}!</p>
         <div>
-          <form @submit.prevent="">
+          <form @submit.prevent="createUser">
             <div class="form-input">
               <input
                 type="text"

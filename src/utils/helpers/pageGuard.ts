@@ -1,6 +1,5 @@
-import { onAuthStateChanged, type User } from 'firebase/auth'
-import leapforceLibs from '../firebase/leapforceLibs'
-import { doc, getDoc } from 'firebase/firestore'
+import { onAuthStateChanged, type User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 /**
  * Method for check the sessionStorage
  *
@@ -18,26 +17,27 @@ import { doc, getDoc } from 'firebase/firestore'
   }
 } */
 
-async function userAuth(): Promise<User | null> {
+/* async function userAuth(): Promise<User | null> {
   return await new Promise((resolve) => {
-    onAuthStateChanged(leapforceLibs.auth, (user) => resolve(user))
-  })
-}
+    onAuthStateChanged(leapforceLibs.auth, (user) => resolve(user));
+  });
+} */
 
-async function isAdmin(): Promise<boolean> {
+/* async function isAdmin(): Promise<boolean> {
   try {
-    const user = await userAuth()
+    const user = await userAuth();
 
-    if (!user) return false
+    if (!user) return false;
 
-    const docSnap = await getDoc(doc(leapforceLibs.firestoreDatabase, 'users', user.uid))
+    const docSnap = await getDoc(
+      doc(leapforceLibs.firestoreDatabase, "users", user.uid)
+    );
 
-    return docSnap.exists() ? docSnap.data().isAdmin === true : false
+    return docSnap.exists() ? docSnap.data().isAdmin === true : false;
   } catch (error) {
-    console.error('error al verificar el permiso: ', error)
+    console.error("error al verificar el permiso: ", error);
 
-    return false
+    return false;
   }
 }
-
-export default { userAuth, isAdmin }
+ */

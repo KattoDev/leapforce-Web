@@ -1,55 +1,64 @@
 <script setup lang="ts">
-import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
-import AddUserModal from '@/components/modals/AddUserModal.vue'
-import { onMounted, ref } from 'vue'
-import leapforceResource from '@/utils/helpers/leapforceResource'
-import type { User } from '@/utils/Classes/User'
-import type { AllUsersTable } from '@/utils/interfaces/tables'
-import TableComponent from '@/components/TableComponent.vue'
+import DashboardBase from "@/components/layout/DashboardBase.vue";
+import AddUserModal from "@/components/modals/AddUserModal.vue";
+import ModuleName from "@/components/layout/moduleName.vue";
+import { Button } from "primevue";
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
+import { ref } from "vue";
 
 const modal = ref({
   isHidden: true,
-})
+});
 
-const TableData = ref<AllUsersTable>({
-  tableHead: ['nombre', 'número de telefono', 'correo electronico', 'Administrador'],
-  tableBody: [],
-})
+const usersList = ref();
 
 function openModal() {
-  modal.value.isHidden = !modal.value.isHidden
+  modal.value.isHidden = !modal.value.isHidden;
 }
 
 function closeModal(isClosed: boolean) {
-  modal.value.isHidden = isClosed
+  modal.value.isHidden = isClosed;
 }
+/* 
+onMounted(async () => {
+  const usersCollection = collection(leapforceLibs.firestoreDatabase, "users");
+  const usersSnapshot = await getDocs(usersCollection);
 
-onMounted(() => {
-  leapforceResource.get('users').then((users: Array<User>) => {
-    TableData.value.tableBody = users.map((user: User) => ({
-      name: user.name,
-      phone: user.phone,
-      email: user.email,
-      isAdmin: user.isAdmin.toString() === '1' ? 'Sí' : 'No',
-    }))
-  })
-})
+  usersList.value = usersSnapshot.docs.map((user) => ({
+    name: user.data().name,
+    email: user.data().email,
+    phone: user.data().phone,
+    isAdmin: user.data().isAdmin ? "Sí" : "No",
+  }));
+}); */
 </script>
 
 <template>
-  <div class="dashboard-container">
-    <AddUserModal @close-modal="closeModal" :class="modal.isHidden ? 'modal-hidden' : ''" />
-    <div class="sidebar">
-      <SidebarComponent />
-    </div>
-    <div class="content">
-      <div>
-        <p class="module-name">Todos los miembros del equipo</p>
-        <div><button @click="openModal" class="button">Añadir nuevo usuario</button></div>
+  <DashboardBase>
+    <AddUserModal
+      @close-modal="closeModal"
+      :class="modal.isHidden ? 'modal-hidden' : ''"
+    />
+    <section class="content">
+      <nav>
+        <ModuleName module-name="todos los miembros del equipo" />
+        <Button
+          label="Añadir nuevo usuario"
+          severity="secondary"
+          @click="openModal"
+        />
+      </nav>
+      <div class="mt-5 overflow-hidden h-96">
+        <DataTable :value="usersList" tableStyle="min-width: 50rem">
+          <Column field="name" header="Nombre"></Column>
+          <Column field="email" header="Email"></Column>
+          <Column field="phone" header="Número de teléfono"></Column>
+          <Column field="isAdmin" header="Administrador"></Column>
+        </DataTable>
       </div>
-      <TableComponent :table-head="TableData.tableHead" :table-body="TableData.tableBody" />
-    </div>
-  </div>
+    </section>
+  </DashboardBase>
 </template>
 
 <style scoped>
@@ -59,17 +68,24 @@ onMounted(() => {
 }
 
 .content {
-  background-color: var(--login-box);
-  box-shadow: 0 0 12px var(--shadow);
+  background-color: var(--p-primary-50);
+  box-shadow: 0 0 12px var(--p-secondary-200);
+
   border-radius: 10px;
   padding: 20px;
-  height: 93.5dvh;
+  height: inherit;
   overflow: scroll;
 
-  div {
+  nav {
     display: flex;
-    align-items: end;
     justify-content: space-between;
+  }
+  button {
+    background: var(--p-secondary-100);
+  }
+
+  button:hover {
+    border: 1px solid var(--p-secondary-200);
   }
 }
 </style>

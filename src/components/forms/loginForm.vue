@@ -1,85 +1,139 @@
 <script setup lang="ts">
-import { Session } from '@/utils/Classes/Session'
-import type { User } from '@/utils/Classes/User'
-import { ref } from 'vue'
+import { User } from "@/models/User";
+import router from "@/router";
+import { useSessionStore } from "@/stores/session";
+import type { ResolverValues } from "@/utils/types/forms";
+import { Form, type FormResolverOptions } from "@primevue/forms";
+import { Button, InputText, Message } from "primevue";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
+import { ref } from "vue";
 
-const loginForm = ref({
-  email: '',
-  password: '',
-})
+const toast = useToast();
 
-async function sendLoginForm() {
-  const user: User = new Session()
+const loginFormValues = ref({
+  email: "",
+  password: "",
+});
 
-  user.email = loginForm.value.email
-  user.password = loginForm.value.password
+function resolver({ values }: FormResolverOptions) {
+  const errors: Record<string, ResolverValues[]> = {
+    email: [],
+    password: [],
+  };
 
-  user.Login()
+  if (!values.email)
+    errors.email.push({ type: "required", message: "Se requiere un email." });
+
+  if (!values.password)
+    errors.password.push({
+      type: "required",
+      message: "Se requiere una contraseña.",
+    });
+
+  if (values.password.length < 8)
+    errors.password.push({
+      type: "minimum",
+      message: "La contraseña debe tener al menos 8 caracteres.",
+    });
+
+  return {
+    values,
+    errors,
+  };
+}
+
+function onFormSubmit({ valid }: { valid: boolean }) {
+  if (valid) {
+    attemptLogin();
+  }
+}
+
+async function attemptLogin() {
+  try {
+    const attempt: User = new User();
+
+    attempt.email = loginFormValues.value.email;
+
+    const message: string = await attempt.Login(loginFormValues.value.password);
+
+    useSessionStore().getAndSetUser(attempt.uid);
+
+    toast.add({
+      severity: "success",
+      summary: message,
+      life: 2000,
+    });
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 2000);
+  } catch (error) {
+    toast.add({
+      severity: "error",
+      summary: error as string,
+      life: 3000,
+    });
+  }
 }
 </script>
 
 <template>
-  <form @submit.prevent="sendLoginForm" method="get">
-    <div>
-      <input
-        type="email"
-        class="font-sono"
-        v-model="loginForm.email"
-        placeholder="email:"
-        required
-      />
-    </div>
-    <div>
-      <input
-        type="password"
-        class="font-sono"
-        v-model="loginForm.password"
-        placeholder="contraseña:"
-        required
-      />
-    </div>
-    <div id="button-container"><button type="submit" class="font-sono">iniciar sesión</button></div>
-  </form>
+  <div>
+    <Toast />
+
+    <Form
+      v-slot="$form"
+      :loginFormValues
+      :resolver
+      @submit="onFormSubmit"
+      class="grid lg:grid-cols-1 gap-4 w-full"
+    >
+      <div class="flex flex-col justify-center items-center gap-4">
+        <div
+          id="container"
+          class="w-1xl flex flex-col justify-center items-center"
+        >
+          <InputText
+            name="email"
+            type="email"
+            placeholder="Correo:"
+            class="w-1xl"
+            v-model="loginFormValues.email"
+          />
+          <Message
+            v-if="$form.email?.invalid"
+            severity="error"
+            size="small"
+            variant="simple"
+            >{{ $form.email.error?.message }}</Message
+          >
+        </div>
+        <div
+          id="container"
+          class="w-1xl flex flex-col justify-center items-center"
+        >
+          <InputText
+            name="password"
+            type="password"
+            placeholder="Contraseña:"
+            class="w-1xl"
+            v-model="loginFormValues.password"
+          />
+          <Message
+            v-if="$form.password?.invalid"
+            severity="error"
+            size="small"
+            variant="simple"
+            >{{ $form.password.error?.message }}</Message
+          >
+        </div>
+        <Button
+          type="submit"
+          severity="secondary"
+          label="Iniciar Sesión"
+          class="w-full sm:w-56"
+        />
+      </div>
+    </Form>
+  </div>
 </template>
-
-<style scoped lang="css">
-form {
-  margin: 80px 0 0 0;
-
-  input {
-    font-weight: 400;
-    padding: 0 0 0 10px;
-    height: 50px;
-    width: 400px;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    font-size: 1em;
-    border: none;
-    background-color: var(--primary-100);
-    box-shadow: 0 0 12px var(--secondary-300);
-    text-transform: capitalize;
-  }
-
-  #button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    button {
-      height: 50px;
-      width: 225px;
-      border-radius: 20px;
-      border: none;
-      font-size: 1em;
-      background: var(--login-gradient);
-      text-transform: capitalize;
-    }
-
-    button:hover {
-      cursor: pointer;
-      box-shadow: 0 0 1em var(--primary-600);
-      transform: translate(0, -1px);
-    }
-  }
-}
-</style>

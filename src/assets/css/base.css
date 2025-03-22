@@ -1,0 +1,39 @@
+body {
+  background-color: var(--p-background-50);
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  color: var(--p-text-700);
+}
+
+/* form errors */
+.p-message.p-message-error {
+  color: var(--p-accent-500) !important;
+}
+
+/* toasts */
+.p-toast-message.p-toast-message-error {
+  background-color: var(--p-accent-100) !important;
+  color: var(--p-accent-700) !important;
+  border-left: 5px solid var(--p-accent-500);
+}
+
+.p-toast-message.p-toast-message-success {
+  background-color: var(--p-primary-100) !important;
+  color: var(--p-primary-700) !important;
+  border-left: 5px solid var(--p-primary-500);
+}
+
+/* fonts */
+.font-poppins {
+  font-family: "Poppins", sans-serif;
+  /* font-weight: 400;
+  font-style: normal; */
+}
+
+.font-megrim {
+  font-family: "Megrim", serif;
+  font-weight: 400;
+  font-style: normal;
+}
