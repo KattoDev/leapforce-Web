@@ -1,6 +1,10 @@
 import { FirebaseService } from "@/services/FirebaseService";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  signInWithEmailAndPassword,
+  updateEmail,
+  updatePassword,
+} from "firebase/auth";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 /**
  * Default class to handle users within the app
@@ -65,6 +69,40 @@ export class User {
       return userSnapshot.data() as User;
     } catch (error) {
       throw new Error("Error al buscar la información del usuario: " + error);
+    }
+  }
+
+  async updateUserInfo(password: string): Promise<string> {
+    try {
+      if (!this.uid) throw new Error("No hay ningun usuario seleccionado.");
+
+      await this.updateCredentials(password);
+
+      const userRef = doc(FirebaseService.db, "users", this.uid);
+      await updateDoc(userRef, {
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+        team: this.team,
+        isAdmin: this.isAdmin,
+      });
+
+      return "Información actualizada";
+    } catch (error) {
+      throw new Error("No se pudo actualizar la información: " + error);
+    }
+  }
+
+  async updateCredentials(password: string): Promise<string> {
+    try {
+      const user = FirebaseService.auth.currentUser;
+      if (user) {
+        await updatePassword(user, password);
+        await updateEmail(user, this.email);
+      }
+      return "email y contraseña actualizados";
+    } catch (error) {
+      throw new Error("no se pudo actualizar el correo y contraseña: " + error);
     }
   }
 }

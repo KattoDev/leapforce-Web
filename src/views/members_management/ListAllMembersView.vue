@@ -1,17 +1,33 @@
 <script setup lang="ts">
 import DashboardBase from "@/components/layout/DashboardBase.vue";
-import AddUserModal from "@/components/modals/AddUserModal.vue";
 import ModuleName from "@/components/layout/moduleName.vue";
+import AddUserModal from "@/components/modals/AddUserModal.vue";
+import { FirebaseService } from "@/services/FirebaseService";
+import { collection, getDocs } from "firebase/firestore";
 import { Button } from "primevue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
-import { ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
+
+onMounted(async () => {
+  const colRef = collection(FirebaseService.db, "users");
+  const usersSnap = await getDocs(colRef);
+
+  usersList.value = usersSnap.docs.map((usr) => ({
+    name: usr.data().name,
+    email: usr.data().email,
+    phone: usr.data().phone,
+    isAdmin: usr.data().isAdmin ? "Sí" : "No",
+  }));
+});
 
 const modal = ref({
   isHidden: true,
 });
 
-const usersList = ref();
+const usersList: Ref<
+  { name: string; email: string; phone: string; isAdmin: string }[]
+> = ref([]);
 
 function openModal() {
   modal.value.isHidden = !modal.value.isHidden;
@@ -20,18 +36,6 @@ function openModal() {
 function closeModal(isClosed: boolean) {
   modal.value.isHidden = isClosed;
 }
-/* 
-onMounted(async () => {
-  const usersCollection = collection(leapforceLibs.firestoreDatabase, "users");
-  const usersSnapshot = await getDocs(usersCollection);
-
-  usersList.value = usersSnapshot.docs.map((user) => ({
-    name: user.data().name,
-    email: user.data().email,
-    phone: user.data().phone,
-    isAdmin: user.data().isAdmin ? "Sí" : "No",
-  }));
-}); */
 </script>
 
 <template>
@@ -42,7 +46,7 @@ onMounted(async () => {
     />
     <section class="content">
       <nav>
-        <ModuleName module-name="todos los miembros del equipo" />
+        <ModuleName module-name="todos los miembros" />
         <Button
           label="Añadir nuevo usuario"
           severity="secondary"

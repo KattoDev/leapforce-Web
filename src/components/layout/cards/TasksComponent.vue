@@ -1,21 +1,28 @@
 <script setup lang="ts">
-import tasks from "@/utils/helpers/tasks";
-import { fakedTasks } from "@/utils/helpers/dummyInfo";
+import { useTaskStore } from "@/stores/tasks";
+import { formatDate } from "@/utils/helpers/dateFormatter";
 import routeRedirect from "@/utils/helpers/routeRedirect";
+import tasks from "@/utils/helpers/tasks";
 import type { Task } from "@/utils/types/tasks";
-
 import Button from "primevue/button";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
-
 import { onMounted, ref, type Ref } from "vue";
 
 const tasksList: Ref<Task[]> = ref([]);
 
-onMounted(async () => {
-  setTimeout(() => {
-    tasksList.value = fakedTasks;
-  }, 2000);
+onMounted(() => {
+  tasksList.value = useTaskStore()
+    .tasks.filter((task) => !task.isFinished)
+    .map((task) => ({
+      name: task.name,
+      status: "sin completar",
+      deadline: formatDate(
+        task.endDate.toDate().getDay(),
+        task.endDate.toDate().getMonth(),
+        task.endDate.toDate().getFullYear()
+      ),
+    }));
 });
 </script>
 
@@ -33,7 +40,7 @@ onMounted(async () => {
       />
     </div>
 
-    <div id="table-container">
+    <div id="table-container" v-if="tasksList.length > 1">
       <DataTable :value="tasksList" tableStyle="min-width: 50rem">
         <Column field="name" header="Nombre"></Column>
         <Column field="status" header="Estado"></Column>

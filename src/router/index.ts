@@ -1,9 +1,10 @@
-import DashboardView from "@/views/dashboard/DashboardView.vue";
 import LoginView from "@/views/auth/LoginView.vue";
+import DashboardView from "@/views/dashboard/DashboardView.vue";
+import UserProfileView from "@/views/dashboard/UserProfileView.vue";
 import EditInfoView from "@/views/members_management/EditInfoView.vue";
 import ListAllMembersView from "@/views/members_management/ListAllMembersView.vue";
+import EditTeamView from "@/views/teams_management/EditTeamView.vue";
 import ListAllTeamsView from "@/views/teams_management/ListAllTeamsView.vue";
-import UserProfileView from "@/views/dashboard/UserProfileView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -50,7 +51,7 @@ const router = createRouter({
     {
       path: "/dashboard/teams-management/edit",
       name: "edit-team",
-      component: () => import("@/views/dashboard/DashboardView.vue"),
+      component: EditTeamView,
       meta: { title: "Editar equipo", requiresAuth: true, adminModule: true },
     },
 

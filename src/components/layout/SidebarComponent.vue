@@ -5,7 +5,11 @@ import dashboardContent from "@/utils/helpers/dashboardContent";
 import routeRedirect from "@/utils/helpers/routeRedirect";
 import type { sidebarModule } from "@/utils/types/sidebar";
 import { PanelMenu, SpeedDial } from "primevue";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
 import { onMounted, ref, type Ref } from "vue";
+
+const toast = useToast();
 
 const sidebar: Ref<{
   userIsAdmin: boolean;
@@ -19,8 +23,16 @@ const SPEED_DIAL = ref([
   {
     label: "logout",
     icon: "pi pi-sign-out",
-    command: () => {
-      alert("logout");
+    command: async () => {
+      try {
+        await useSessionStore().logout();
+      } catch (error) {
+        toast.add({
+          severity: "error",
+          summary: error as string,
+          life: 2000,
+        });
+      }
     },
   },
   {
@@ -42,6 +54,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Toast />
   <menu>
     <div id="app-name" class="font-megrim">
       <p @click="router.push('/dashboard')">LEAPFORCE</p>

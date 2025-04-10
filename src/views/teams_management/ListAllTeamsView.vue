@@ -1,76 +1,43 @@
 <script setup lang="ts">
-import SidebarComponent from "@/components/layout/SidebarComponent.vue";
-import type { Team } from "@/models/Team";
-import type { TeamCard } from "@/utils/types/cards";
+import InfoCard from "@/components/layout/cards/InfoCard.vue";
+import DashboardBase from "@/components/layout/DashboardBase.vue";
+import ModuleName from "@/components/layout/moduleName.vue";
+import { useTeamsStore } from "@/stores/teams";
 import { onMounted, ref, type Ref } from "vue";
+import { Button } from "primevue";
 
-const teams: Ref<TeamCard[]> = ref([]);
+const teams: Ref<{ name: string; projects: number; users: number }[]> = ref([]);
 
-onMounted(() => {
-  leapforceResource.get("teams").then((teamsRecived: Team[]) => {
-    const teamsLoaded: TeamCard[] = teamsRecived.map((team: Team) => ({
-      TMID: team.TMID,
-      name: team.name,
-    }));
+onMounted(async () => {
+  const useTeams = useTeamsStore();
 
-    teams.value = teamsLoaded;
-  });
+  if (!useTeams.teams.length) {
+    useTeams.getTasks();
+  } else {
+    teams.value = useTeams.teams;
+  }
 });
 </script>
 
 <template>
-  <div class="dashboard-container">
-    <div class="sidebar">
-      <SidebarComponent />
-    </div>
-    <div class="content">
-      <div><p class="module-name">Todos los equipos</p></div>
-
-      <div id="teams-container">
-        <div class="team-card" v-for="team in teams" :key="team.TMID">
-          <p>{{ team.name }}</p>
-        </div>
+  <DashboardBase>
+    <section class="card w-full overflow-scroll h-[97.5dvh]">
+      <div class="flex justify-between items-center">
+        <ModuleName module-name="Todos los equipos" class="mb-3" />
+        <Button label="Añadir equipo" class="h-10" />
       </div>
-    </div>
-  </div>
+      <div v-if="teams.length < 1">
+        <ModuleName module-name="cargando equipos..." />
+      </div>
+      <div class="grid grid-cols-4 gap-2" v-else>
+        <InfoCard
+          v-for="team in teams"
+          :key="team.name"
+          :cardname="team.name"
+          :info1="'Proyectos pendientes: ' + team.projects"
+          :info2="'Miembros: ' + team.users"
+        />
+      </div>
+    </section>
+  </DashboardBase>
 </template>
-
-<style scoped>
-.sidebar,
-.content {
-  border-radius: 10px;
-}
-
-.content {
-  background-color: var(--primary-10);
-  box-shadow: 0 0 12px var(--secondary-200);
-  border-radius: 10px;
-  padding: 20px;
-  height: 93.5dvh;
-  overflow: scroll;
-
-  #teams-container {
-    margin: 20px 0 0 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-
-    .team-card {
-      width: 250px;
-      height: 100px;
-      background-color: var(--secondary-200);
-      border-radius: 5px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      p {
-        font-size: 1.5em;
-      }
-    }
-    .team-card:hover {
-      cursor: pointer;
-    }
-  }
-}
-</style>

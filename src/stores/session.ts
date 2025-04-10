@@ -1,6 +1,10 @@
 import { Team } from "@/models/Team";
 import { User } from "@/models/User";
+import { FirebaseService } from "@/services/FirebaseService";
+import routeRedirect from "@/utils/helpers/routeRedirect";
+import { signOut } from "firebase/auth";
 import { defineStore } from "pinia";
+import { useTaskStore } from "./tasks";
 
 export const useSessionStore = defineStore("session", {
   state: () => ({
@@ -25,8 +29,15 @@ export const useSessionStore = defineStore("session", {
       this.isAdmin = userInfo.isAdmin;
     },
 
-    logout() {
-      this.$reset();
+    async logout() {
+      try {
+        await signOut(FirebaseService.auth);
+        this.$reset();
+        useTaskStore().clearTasks();
+        routeRedirect.goTo("/");
+      } catch (error) {
+        throw new Error("No se pudo cerrar sesión: " + error);
+      }
     },
   },
 

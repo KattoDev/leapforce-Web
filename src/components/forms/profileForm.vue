@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { User } from "@/models/User";
 import { useSessionStore } from "@/stores/session";
 import type { ResolverValues } from "@/utils/types/forms";
 import { Form, type FormResolverOptions } from "@primevue/forms";
@@ -78,9 +79,30 @@ function onFormSubmit({ valid }: { valid: boolean }) {
   }
 }
 
+function togglePassword() {
+  document
+    .querySelectorAll(".password-input")
+    .forEach((element: Element) =>
+      element.setAttribute(
+        "type",
+        updateFormValues.value.seePassword ? "text" : "password"
+      )
+    );
+}
+
 async function updateInfo() {
   try {
-    const message: string = "Pendiente de actualizar";
+    const form = updateFormValues.value;
+    const userInfo = new User({
+      uid: useSessionStore().uid,
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      team: useSessionStore().teamId,
+      isAdmin: useSessionStore().isAdmin,
+    });
+
+    const message: string = await userInfo.updateUserInfo(form.password);
     toast.add({
       severity: "success",
       summary: message,
@@ -158,7 +180,11 @@ async function updateInfo() {
             v-model="updateFormValues.email"
           />
           <div>
-            <Checkbox v-model="updateFormValues.seePassword" binary />
+            <Checkbox
+              v-model="updateFormValues.seePassword"
+              binary
+              v-on:change="togglePassword"
+            />
             <label for="togglePassword">Ver contraseña</label>
           </div>
           <Message
@@ -177,7 +203,7 @@ async function updateInfo() {
             name="password"
             type="password"
             placeholder="Contraseña:"
-            class="w-1xl"
+            class="w-1xl password-input"
             v-model="updateFormValues.password"
           />
           <Message
@@ -195,7 +221,7 @@ async function updateInfo() {
               name="passwordCheck"
               type="password"
               placeholder="Confirmar contraseña:"
-              class="w-1xl"
+              class="w-1xl password-input"
               v-model="updateFormValues.passwordCheck"
             />
             <Message

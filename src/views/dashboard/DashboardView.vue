@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import DashboardBase from "@/components/layout/DashboardBase.vue";
-import TasksComponent from "@/components/simple_cards/TasksComponent.vue";
-import TeamComponent from "@/components/simple_cards/TeamComponent.vue";
-import UserComponent from "@/components/simple_cards/UserComponent.vue";
+import TasksComponent from "@/components/layout/cards/TasksComponent.vue";
+import TeamComponent from "@/components/layout/cards/TeamComponent.vue";
+import UserComponent from "@/components/layout/cards/UserComponent.vue";
 </script>
 
 <template>

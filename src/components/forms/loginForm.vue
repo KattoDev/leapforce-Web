@@ -2,6 +2,7 @@
 import { User } from "@/models/User";
 import router from "@/router";
 import { useSessionStore } from "@/stores/session";
+import { useTaskStore } from "@/stores/tasks";
 import type { ResolverValues } from "@/utils/types/forms";
 import { Form, type FormResolverOptions } from "@primevue/forms";
 import { Button, InputText, Message } from "primevue";
@@ -57,7 +58,9 @@ async function attemptLogin() {
 
     const message: string = await attempt.Login(loginFormValues.value.password);
 
-    useSessionStore().getAndSetUser(attempt.uid);
+    const session = useSessionStore();
+    session.getAndSetUser(attempt.uid);
+    useTaskStore().getTasks(session.uid);
 
     toast.add({
       severity: "success",

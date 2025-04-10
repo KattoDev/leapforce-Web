@@ -4,7 +4,10 @@ import {
   addDoc,
   collection,
   CollectionReference,
+  getDocs,
+  query,
   Timestamp,
+  where,
   type DocumentData,
 } from "firebase/firestore";
 
@@ -48,5 +51,17 @@ export class Project {
     } catch (error) {
       throw new Error("No se pudo crear el proyecto debido a: " + error);
     }
+  }
+
+  async getPendingProjects(teamUID: string) {
+    const col = collection(FirebaseService.db, "projects");
+
+    const q = query(
+      col,
+      where("team", "==", teamUID),
+      where("isFinished", "==", false)
+    );
+
+    return await getDocs(q);
   }
 }

@@ -6,6 +6,9 @@ import {
   CollectionReference,
   doc,
   getDoc,
+  getDocs,
+  query,
+  where,
   type DocumentData,
 } from "firebase/firestore";
 
@@ -63,5 +66,20 @@ export class Team {
     } catch (error) {
       throw new Error("No se pudo buscar el equipo: " + error);
     }
+  }
+
+  async getTeams() {
+    const col = collection(FirebaseService.db, "teams");
+
+    const snapshot = await getDocs(col);
+
+    return snapshot.docs;
+  }
+
+  async getUsersInTeam(teamUID: string) {
+    const col = collection(FirebaseService.db, "users");
+
+    const q = query(col, where("team", "==", teamUID));
+    return await getDocs(q);
   }
 }

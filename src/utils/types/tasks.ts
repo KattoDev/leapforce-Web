@@ -1,5 +1,5 @@
 export interface Task {
   name: string;
-  status: boolean;
+  status: string;
   deadline: string;
 }
